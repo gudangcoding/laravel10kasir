@@ -1,0 +1,5 @@
+error Class "App\Http\Controllers\Redirect" not found
+solusi use Illuminate\Support\Facades\Redirect;
+
+error use PDF Not found
+use Barryvdh\DomPDF\PDF;

@@ -49,7 +49,7 @@ class PembelianController extends Controller
    public function show($id)
    {
    
-     $detail = PembelianDetail::leftJoin('produk', 'produk.kode_produk', '=', 'pembelian_detail.kode_produk')
+     $detail = PembelianDetail::leftJoin('produks', 'produks.kode_produk', '=', 'pembelian_details.kode_produk')
         ->where('id_pembelian', '=', $id)
         ->get();
      $no = 0;

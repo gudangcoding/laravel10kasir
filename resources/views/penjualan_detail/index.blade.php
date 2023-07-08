@@ -24,7 +24,7 @@
                         <div class="input-group">
                             <input id="kode" type="text" class="form-control" name="kode" autofocus required>
                             <span class="input-group-btn">
-                                <button onclick="showProduct()" type="button" class="btn btn-info">...</button>
+                                <button onclick="showProduct()" type="button" class="btn btn-info">Cari Barang</button>
                             </span>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                     "type": "GET"
                 }
             }).on('draw.dt', function() {
-                loadForm($('#diskon').val());
+                // loadForm($('#diskon').val());
             });
 
             $('.form-produk').on('submit', function() {

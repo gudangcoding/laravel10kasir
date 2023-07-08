@@ -18,6 +18,7 @@ class PenjualanDetailController extends Controller
       $produk = Produk::all();
       $member = Member::all();
       $setting = Setting::first();
+      
 
      if(!empty(session('idpenjualan'))){
        $idpenjualan = session('idpenjualan');
@@ -33,6 +34,7 @@ class PenjualanDetailController extends Controller
      $detail = PenjualanDetail::leftJoin('produks', 'produks.kode_produk', '=', 'penjualan_details.kode_produk')
         ->where('id_penjualan', '=', $id)
         ->get();
+
      $no = 0;
      $data = array();
      $total = 0;
@@ -43,10 +45,10 @@ class PenjualanDetailController extends Controller
        $row[] = $no;
        $row[] = $list->kode_produk;
        $row[] = $list->nama_produk;
-       $row[] = "Rp. ".format_uang($list->harga_jual);
+       $row[] = $list->harga_jual;
        $row[] = "<input type='number' class='form-control' name='jumlah_$list->id_penjualan_detail' value='$list->jumlah' onChange='changeCount($list->id_penjualan_detail)'>";
        $row[] = $list->diskon."%";
-       $row[] = "Rp. ".format_uang($list->sub_total);
+       $row[] = $list->sub_total;
        $row[] = '<div class="btn-group">
                <a onclick="deleteItem('.$list->id_penjualan_detail.')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>';
        $data[] = $row;
@@ -65,8 +67,6 @@ class PenjualanDetailController extends Controller
    {
       
         $produk = Produk::where('kode_produk', '=', $request['kode'])->first();
-      //   var_dump($request['kode']);
-      //    exit;
         $detail = new PenjualanDetail;
         $detail->id_penjualan = $request['idpenjualan'];
         $detail->kode_produk = $request['kode'];
@@ -107,7 +107,9 @@ class PenjualanDetailController extends Controller
       $penjualan->id_user = Auth::user()->id;    
       $penjualan->save();
       
-      session(['idpenjualan' => $penjualan->id_penjualan]);
+      session(
+         ['idpenjualan' => $penjualan->id_penjualan]
+      );
 
       return Redirect::route('transaksi.index');    
    }

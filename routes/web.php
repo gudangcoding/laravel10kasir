@@ -15,6 +15,7 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PenjualanDetailController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ImageController;
 use App\Models\Kategori;
 
 /*
@@ -29,6 +30,13 @@ use App\Models\Kategori;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('penjualan/data', [PenjualanController::class,'listData'])->name('penjualan.data');
+
+
+Route::controller(ImageController::class)->group(function(){
+   Route::get('image-upload', 'index');
+   Route::post('image-upload', 'store')->name('image.store');
+});
 
 Auth::routes();
 

@@ -13,7 +13,8 @@
     <div class="card">
         <div class="card-body">
             <form class="form form-horizontal" data-toggle="validator" method="post" enctype="multipart/form-data">
-                {{ csrf_field() }} {{ method_field('PATCH') }}
+                {{ csrf_field() }} 
+                {{-- {{ method_field('PATCH') }} --}}
                 <div class="box-body">
 
                     <div class="alert alert-info alert-dismissible" style="display:none">
@@ -101,7 +102,7 @@
                     $.ajax({
                         url: "setting/1",
                         type: "POST",
-                        $('input[name=_method]').val('PUT');
+                        // $('input[name=_method]').val('PUT');
                         data: new FormData($(".form")[0]),
                         async: false,
                         processData: false,

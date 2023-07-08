@@ -50,7 +50,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="merk" class=" control-label">Foto</label>
-                                <input id="foto" type="file" class="form-control" name="foto">
+                                <input type="file" id="foto" class="form-control" name="foto">
                                 <span class="help-block with-errors"></span>
                             </div>
                         </div>
@@ -80,7 +80,19 @@
                                 <label for="stok" class=" control-label">Stok</label>
                                 <input id="stok" type="text" class="form-control" name="stok" required>
                                 <span class="help-block with-errors"></span>
-
+                            </div>
+                            <div class="form-group">
+                                <label for="stok" class=" control-label">Satuan</label>
+                                <select name="satuan" id="satuan" class="form-control">
+                                    <option value="">Pilih Satuan</option>
+                                    <option value="dus">Dus</option>
+                                    <option value="pcs">Pcs</option>
+                                    <option value="pak">Pak</option>
+                                    <option value="rcg">Renceng</option>
+                                    <option value="ktg">Kantong</option>
+                                    <option value="kg">Kilogram</option>
+                                </select>
+                                <span class="help-block with-errors"></span>
                             </div>
                         </div>
 

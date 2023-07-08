@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Member;
-use Barryvdh\DomPDF\PDF as PDF;
+use  PDF;
 // use Barryvdh\DomPDF\Facade as PDF;
 
 class MemberController extends Controller
@@ -85,8 +85,10 @@ class MemberController extends Controller
          $datamember[] = $member;
       }
       
-      $pdf = PDF::loadView('member.card', compact('datamember'));
-      $pdf->setPaper(array(0, 0, 566.93, 850.39), 'potrait');     
-      return $pdf->stream();
+      json_encode($datamember);
+      // $pdf = PDF::loadView('member.card', compact('datamember'));
+      // $pdf->setPaper(array(0, 0, 566.93, 850.39), 'potrait');     
+      // return $pdf->stream();
+      // return view('member.card', compact('datamember'));
    }
 }

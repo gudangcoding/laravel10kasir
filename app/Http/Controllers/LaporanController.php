@@ -74,5 +74,6 @@ class LaporanController extends Controller
      $pdf->setPaper('a4', 'potrait');
      
      return $pdf->stream();
+    //  return view('laporan.pdf', compact('tanggal_awal', 'tanggal_akhir', 'data')); 
    }
 }

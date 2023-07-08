@@ -26,7 +26,7 @@ class SupplierController extends Controller
        $row[] = $list->alamat;
        $row[] = $list->telpon;
        $row[] = '<div class="btn-group">
-               <a onclick="editForm('.$list->id_supplier.')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+               <a onclick="editForm('.$list->id_supplier.')" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
                <a onclick="deleteData('.$list->id_supplier.')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a></div>';
        $data[] = $row;
      }

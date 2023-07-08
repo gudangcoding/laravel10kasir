@@ -121,15 +121,17 @@
 
             $('#modal-form form').on('submit', function(e) {
                 if (!e.isDefaultPrevented()) {
+                    let formData = new FormData(this);
                     var id = $('#id').val();
                     if (save_method == "add") url = "{{ route('produk.store') }}";
                     else url = "produk/" + id;
-
+console.log($('#modal-form form').serialize());
                     $.ajax({
                         url: url,
                         type: "POST",
-                        data: $('#modal-form form').serialize(),
-                        dataType: 'JSON',
+                        // data: $('#modal-form form').serialize(),
+                        data: formData,
+                        // dataType: 'JSON',
                         success: function(data) {
                             if (data.msg == "error") {
                                 alert('Kode produk sudah digunakan!');

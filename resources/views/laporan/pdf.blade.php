@@ -2,7 +2,8 @@
 <html>
 <head>  
   <title>Produk PDF</title>
-  <link rel="stylesheet" href="{{ asset('public/adminLTE/bootstrap/css/bootstrap.min.css') }}">
+  
+  <link rel="stylesheet" href="{{ asset('lte/dist/css/adminlte.min.css') }}">
 </head>
 <body>
  
@@ -10,7 +11,7 @@
 <h4 class="text-center">Tanggal  {{ tanggal_indonesia($tanggal_awal) }} s/d {{ tanggal_indonesia($tanggal_akhir) }} </h4>
 
          
-<table class="table table-striped">
+<table class="table table-bordered">
 <thead>
    <tr>
     <th>No</th>

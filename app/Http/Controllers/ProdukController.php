@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Produk;
 use App\Models\Kategori;
 use Yajra\DataTables\Facades\DataTables;
-use PDF;
+// use PDF;
 // use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProdukController extends Controller
 {
@@ -21,7 +23,7 @@ class ProdukController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('checkbox', function ($item) {
-                        $cek = "<input type='checkbox' name='id[]'' value='".$item->id_produk."'>";
+                        $cek = "<input type='checkbox' name='id[]' value='".$item->id_produk."'>";
                         return $cek;
                       })
                     ->addColumn('nomor', function ($item) {
@@ -84,26 +86,15 @@ class ProdukController extends Controller
             $produk->diskon       = $request['diskon'];
             $produk->harga_jual    = $request['harga_jual'];
             $produk->stok          = $request['stok'];
+            $produk->satuan          = $request['satuan'];
+            $foto = time() . '.jpg';
+            Storage::put('images/produk/', $foto);
+            // $request->foto->storeAs('images/produk', $foto);
+            // $request->move(public_path('images/produk'), $foto);
+            // $request->foto->storeAs('public/images/produk', $foto);
 
-            //jika file ada
-            if ($request->hasFile('logo')) {
-                //ambil nama file
-                $file = $request->file('logo');
-                //rubah nama file
-                $nama_gambar = "logo.".$file->getClientOriginalExtension();
-                //tentukan lokasi file
-                $lokasi = public_path('images');
-                //upload file dengan nama baru ke lokasi yang sudah ditentikan
-                $file->move($lokasi, $nama_gambar);
-                $produk->logo = $nama_gambar;  
-            }
-
-            // if($request->file('image')){
-            //     $file= $request->file('image');
-            //     $filename= date('YmdHi').$file->getClientOriginalName();
-            //     $file-> move(public_path('public/Image'), $filename);
-            //     $produk->gambar= $filename;
-            // }
+            // $foto = $request->file('foto')->store('public/images/produk');
+            $produk->gambar= $foto;
             $produk->save();
             echo json_encode(array('msg'=>'success'));
         }else{
@@ -127,6 +118,9 @@ class ProdukController extends Controller
         $produk->diskon       = $request['diskon'];
         $produk->harga_jual    = $request['harga_jual'];
         $produk->stok          = $request['stok'];
+        $produk->satuan          = $request['satuan'];
+        $foto = $request->file('foto')->store('public/images/produk');
+        $produk->gambar= $foto;
         $produk->update();
         echo json_encode(array('msg'=>'success'));
     }
@@ -166,7 +160,7 @@ class ProdukController extends Controller
             $dataproduk[] = $produk;
         }
         $no = 1;
-        $pdf = PDF::loadView('produk.barcode', compact('dataproduk', 'no'));
+        $pdf = Pdf::loadView('produk.barcode', compact('dataproduk', 'no'));
         $pdf->setPaper('a4', 'potrait');      
         return $pdf->stream();
     }

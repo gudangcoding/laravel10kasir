@@ -65,11 +65,9 @@
             </div>
             <div class="box-body">
             	<div class="chart">
-<<<<<<< HEAD
-                    {{-- <canvas id="salesChart" style="height: 250px;"></canvas> --}}
-=======
+
                     <!-- <canvas id="salesChart" style="height: 250px;"></canvas> -->
->>>>>>> b9b958eb05244e29232620635c48280855a58dc4
+
                     <canvas id="myChart"></canvas>
                 </div>
             </div>
@@ -110,11 +108,9 @@ $(function () {
   salesChart.Line(salesChartData, salesChartOptions);
 });
 </script>
-<<<<<<< HEAD
 
-=======
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
->>>>>>> b9b958eb05244e29232620635c48280855a58dc4
+
 <script>
   const ctx = document.getElementById('myChart');
 

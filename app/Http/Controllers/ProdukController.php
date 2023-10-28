@@ -95,8 +95,15 @@ class ProdukController extends Controller
             $produk->harga_jual = $request['harga_jual'];
             $produk->stok = $request['stok'];
             $produk->satuan = $request['satuan'];
-            $foto = $request->file('foto')->store('public/images/produk');
-            $produk->gambar = $foto;
+
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+                $nama_gambar = "produk.".$file->getClientOriginalExtension();
+                $lokasi = public_path('images/produk');
+                $file->move($lokasi, $nama_gambar);
+                $produk->gambar = $nama_gambar;  
+             }
+          
 
             $produk->save();
             echo json_encode(array('msg' => 'success'));
@@ -122,8 +129,13 @@ class ProdukController extends Controller
         $produk->harga_jual = $request['harga_jual'];
         $produk->stok = $request['stok'];
         $produk->satuan = $request['satuan'];
-        $foto = $request->file('foto')->store('public/images/produk');
-        $produk->gambar = $foto;
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $nama_gambar = "produk.".$file->getClientOriginalExtension();
+            $lokasi = public_path('images/produk');
+            $file->move($lokasi, $nama_gambar);
+            $produk->gambar = $nama_gambar;  
+         }
         $produk->update();
         echo json_encode(array('msg' => 'success'));
     }

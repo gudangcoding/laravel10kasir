@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer('id_kategori')->unsigned();           
             $table->string('nama_produk', 100);           
             $table->string('merk', 50);             
+            $table->string('satuan', 50);             
+            $table->string('gambar');             
             $table->bigInteger('harga_beli')->unsigned();         
             $table->integer('diskon')->unsigned();             
             $table->bigInteger('harga_jual')->unsigned();          

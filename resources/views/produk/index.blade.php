@@ -71,9 +71,14 @@
                         name: 'checkbox'
                     },
                     {
+                        data: 'gambar',
+                        name: 'gambar'
+                    },
+                    {
                         data: 'nomor',
                         name: 'nomor'
                     },
+                   
                     {
                         data: 'kode_produk',
                         name: 'kode_produk'
@@ -133,6 +138,7 @@ console.log($('#modal-form form').serialize());
                         data: formData,
                         // dataType: 'JSON',
                         success: function(data) {
+                            console.log(data);
                             if (data.msg == "error") {
                                 alert('Kode produk sudah digunakan!');
                                 $('#kode').focus().select();

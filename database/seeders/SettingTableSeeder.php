@@ -16,6 +16,16 @@ class SettingTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        DB::table('settings')->insert(array(
+            [
+             'nama_perusahaan' => 'Heymart', 
+             'alamat' => 'Jl. Citarum, Slawi, Tegal',
+             'telepon' => '085823423232',
+             'logo' => 'logo.png',
+             'kartu_member' => 'card.png',
+             'diskon_member' => '10',
+             'tipe_nota' => '0'
+            ]
+           ));
     }
 }

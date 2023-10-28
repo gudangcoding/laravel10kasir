@@ -89,6 +89,7 @@ Route::group(['middleware' => ['web', 'cekuser:1' ]], function(){
    Route::get('penjualan/data', [PenjualanController::class,'listData'])->name('penjualan.data');
    Route::get('penjualan/{id}/lihat', [PenjualanController::class,'show']);
    Route::resource('penjualan', PenjualanController::class);
+   Route::get('penjualan/kasir', [PenjualanController::class,'kasir'])->name('penjualan.kasir');
 
    Route::get('laporan', [LaporanController::class,'index'])->name('laporan.index');
    Route::post('laporan', [LaporanController::class,'refresh'])->name('laporan.refresh');

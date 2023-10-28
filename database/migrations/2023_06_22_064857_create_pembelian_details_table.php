@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('pembelian__details', function (Blueprint $table) {
             $table->increments('id_pembelian_detail');         
-            $table->integer('id_pembelian')->unsigned();         
-            $table->bigInteger('kode_produk')->unsigned();           
-            $table->bigInteger('harga_beli')->unsigned();           
-            $table->integer('jumlah')->unsigned();             
-            $table->bigInteger('sub_total')->unsigned();      
+            $table->integer('id_pembelian');         
+            $table->bigInteger('kode_produk');           
+            $table->bigInteger('harga_beli');           
+            $table->integer('jumlah');             
+            $table->bigInteger('sub_total');      
             $table->timestamps();
         });
     }

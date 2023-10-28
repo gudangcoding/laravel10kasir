@@ -85,4 +85,9 @@ class PenjualanController extends Controller
         $data->delete();
       }
    }
+
+   function kasir()  {
+      return view('produk.kasir');
+   }
+
 }

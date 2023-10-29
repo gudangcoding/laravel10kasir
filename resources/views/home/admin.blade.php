@@ -6,7 +6,6 @@
 
 @section('breadcrumb')
    @parent
-   <li>Dashboard</li>
 @endsection
 
 @section('content') 

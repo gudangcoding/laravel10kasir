@@ -6,9 +6,11 @@
    {{ csrf_field() }} {{ method_field('POST') }}
    
    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span> </button>
       <h3 class="modal-title"></h3>
-   </div>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true"> &times; </span> </button>
+
+  </div>
             
 <div class="modal-body">
    

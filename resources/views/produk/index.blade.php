@@ -32,6 +32,7 @@
                         <tr>
                             <th width="20"><input type="checkbox" value="1" id="select-all"></th>
                             <th width="20">No</th>
+                            <th>Gambar</th>
                             <th>Kode Produk</th>
                             <th>Nama Produk</th>
                             <th>Kategori</th>
@@ -71,14 +72,16 @@
                         name: 'checkbox'
                     },
                     {
-                        data: 'gambar',
-                        name: 'gambar'
-                    },
-                    {
                         data: 'nomor',
                         name: 'nomor'
                     },
-                   
+                    {
+                        data: 'gambar',
+                        name: 'gambar',
+                        // render: function(data, type, full, meta) {
+                        //     return '<img src="' + data + '" alt="Product Image" width="50">';
+                        // }
+                    },
                     {
                         data: 'kode_produk',
                         name: 'kode_produk'
@@ -130,7 +133,7 @@
                     var id = $('#id').val();
                     if (save_method == "add") url = "{{ route('produk.store') }}";
                     else url = "produk/" + id;
-console.log($('#modal-form form').serialize());
+                    console.log($('#modal-form form').serialize());
                     $.ajax({
                         url: url,
                         type: "POST",

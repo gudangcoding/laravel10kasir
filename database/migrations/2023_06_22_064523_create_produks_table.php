@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nama_produk', 100);           
             $table->string('merk', 50);             
             $table->string('satuan', 50);             
-            $table->string('gambar');             
+            $table->string('gambar')->nullable();             
             $table->bigInteger('harga_beli');         
             $table->integer('diskon');             
             $table->bigInteger('harga_jual');          

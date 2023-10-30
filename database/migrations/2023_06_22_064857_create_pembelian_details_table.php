@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembelian__details', function (Blueprint $table) {
+        Schema::create('pembelian_details', function (Blueprint $table) {
             $table->increments('id_pembelian_detail');         
             $table->integer('id_pembelian');         
             $table->bigInteger('kode_produk');           
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembelian__details');
+        Schema::dropIfExists('pembelian_details');
     }
 };

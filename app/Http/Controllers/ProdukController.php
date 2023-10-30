@@ -97,8 +97,8 @@ class ProdukController extends Controller
             $produk->satuan = $request['satuan'];
             $produk->gambar = $request['gambar'];
 
-            if ($request->hasFile('foto')) {
-                $file = $request->file('foto');
+            if ($request->hasFile('gambar')) {
+                $file = $request->file('gambar');
                 $nama_gambar = "produk." . $file->getClientOriginalExtension();
                 $lokasi = public_path('images/produk');
                 $file->move($lokasi, $nama_gambar);

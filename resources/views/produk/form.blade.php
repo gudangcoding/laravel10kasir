@@ -49,8 +49,8 @@
                                 <span class="help-block with-errors"></span>
                             </div>
                             <div class="form-group">
-                                <label for="merk" class=" control-label">Foto</label>
-                                <input type="file" id="foto" class="form-control" name="foto">
+                                <label for="merk" class=" control-label">Gambar Produk</label>
+                                <input type="file" id="gambar" class="form-control" name="gambar">
                                 <span class="help-block with-errors"></span>
                             </div>
                         </div>

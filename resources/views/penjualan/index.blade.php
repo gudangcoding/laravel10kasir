@@ -13,7 +13,7 @@ Daftar Penjualan
 
 <div class="card">
   <div class="card-body">
-    <a class="btn btn-success" href="{{route('penjualan.kasir')}}">Tambah Penjualan</a>
+    <a class="btn btn-success" href="{{route('transaksi.new')}}">Tambah Penjualan</a>
     <hr>
     <table class="table table-striped tabel-penjualan">
       <thead>

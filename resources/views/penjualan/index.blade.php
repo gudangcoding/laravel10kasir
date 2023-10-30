@@ -6,7 +6,7 @@ Daftar Penjualan
 
 @section('breadcrumb')
 @parent
-<li>penjualan</li>
+<li class="breadcrumb-item active"><a href="">Penjualan</a></li>
 @endsection
 
 @section('content')

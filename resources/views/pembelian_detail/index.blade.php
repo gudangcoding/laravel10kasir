@@ -6,8 +6,7 @@
 
 @section('breadcrumb')
    @parent
-   <li>pembelian</li>
-   <li>tambah</li>
+   <li class="breadcrumb-item active"><a href="">Tambah Pembelian</a></li>
 @endsection
 
 @section('content')     

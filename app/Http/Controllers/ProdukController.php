@@ -95,6 +95,7 @@ class ProdukController extends Controller
             $produk->harga_jual = $request['harga_jual'];
             $produk->stok = $request['stok'];
             $produk->satuan = $request['satuan'];
+            $produk->gambar = $request['gambar'];
 
             if ($request->hasFile('foto')) {
                 $file = $request->file('foto');

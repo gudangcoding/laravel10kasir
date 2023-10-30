@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     @parent
-    <li>supplier</li>
+    <li class="breadcrumb-item active"><a href="">Supplier</a></li>
 @endsection
 
 @section('content')

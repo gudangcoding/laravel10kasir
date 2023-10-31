@@ -20,7 +20,7 @@
                             <div class="form-group">
                                 <label for="kode" class=" control-label">Kode Produk</label>
 
-                                <input id="kode" type="text" class="form-control" name="kode" autofocus
+                                <input id="kode" type="number" class="form-control" name="kode" autofocus
                                     required>
                                 <span class="help-block with-errors"></span>
 

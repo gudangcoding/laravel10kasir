@@ -180,6 +180,7 @@
                 url: "{{ route('transaksi.store') }}",
                 type: "POST",
                 data: $('.form-produk').serialize(),
+                
                 success: function(data) {
                     $('#kode').val('').focus();
                     table.ajax.reload(function() {
@@ -187,6 +188,7 @@
                     });
                 },
                 error: function() {
+                    
                     alert("Tidak dapat menyimpan data!");
                 }
             });

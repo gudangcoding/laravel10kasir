@@ -31,6 +31,7 @@
                             <th width="5%">No</th>
                             <th>Kode</th>
                             <th>Nama</th>
+                            <th>Gambar</th>
                             <th>Kategori</th>
                             <th>Merk</th>
                             <th>Harga Beli</th>
@@ -65,6 +66,7 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'kode_produk'},
                 {data: 'nama_produk'},
+                {data: 'gambar'},
                 {data: 'nama_kategori'},
                 {data: 'merk'},
                 {data: 'harga_beli'},

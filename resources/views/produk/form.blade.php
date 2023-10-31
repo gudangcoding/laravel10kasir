@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="" method="post" class="form-horizontal">
+        <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
             @csrf
             @method('post')
 
@@ -62,6 +62,13 @@
                         <label for="stok" class="col-lg-2 col-lg-offset-1 control-label">Stok</label>
                         <div class="col-lg-6">
                             <input type="number" name="stok" id="stok" class="form-control" required value="0">
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="stok" class="col-lg-2 col-lg-offset-1 control-label">Stok</label>
+                        <div class="col-lg-6">
+                            <input type="file" name="fambar" id="fambar" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

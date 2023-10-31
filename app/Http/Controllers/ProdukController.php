@@ -39,6 +39,9 @@ class ProdukController extends Controller
             ->addColumn('kode_produk', function ($produk) {
                 return '<span class="label label-success">'. $produk->kode_produk .'</span>';
             })
+            ->addColumn('gambar', function ($gbr) {
+                return '<img width="50" src="'. $gbr->gambar.'">';
+            })
             ->addColumn('harga_beli', function ($produk) {
                 return format_uang($produk->harga_beli);
             })
@@ -56,7 +59,7 @@ class ProdukController extends Controller
                 </div>
                 ';
             })
-            ->rawColumns(['aksi', 'kode_produk', 'select_all'])
+            ->rawColumns(['aksi', 'kode_produk', 'select_all','gambar'])
             ->make(true);
     }
 
@@ -80,7 +83,14 @@ class ProdukController extends Controller
     {
         $produk = Produk::latest()->first() ?? new Produk();
         $request['kode_produk'] = 'P'. tambah_nol_didepan((int)$produk->id_produk +1, 6);
-
+        //upload gambar
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $nama_gambar = "produk.".$file->getClientOriginalExtension();
+            $lokasi = public_path('images/produk');
+            $file->move($lokasi, $nama_gambar);
+            $produk->kartu_member   = $nama_gambar;  
+         }
         $produk = Produk::create($request->all());
 
         return response()->json('Data berhasil disimpan', 200);

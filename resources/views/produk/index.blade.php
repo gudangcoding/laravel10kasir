@@ -33,12 +33,12 @@
                             <th width="20"><input type="checkbox" value="1" id="select-all"></th>
                             <th width="20">No</th>
                             <th>Gambar</th>
-                            <th>Kode Produk</th>
-                            <th>Nama Produk</th>
+                            <th>Kode</th>
+                            <th>Nama</th>
                             <th>Kategori</th>
                             <th>Merk</th>
-                            <th>Harga Beli</th>
-                            <th>Harga Jual</th>
+                            <th>Beli</th>
+                            <th>Jual</th>
                             <th>Diskon</th>
                             <th>Stok</th>
                             <th width="100">Aksi</th>
@@ -128,6 +128,7 @@
             });
 
             $('#modal-form form').on('submit', function(e) {
+               
                 if (!e.isDefaultPrevented()) {
                     let formData = new FormData(this);
                     var id = $('#id').val();
@@ -143,15 +144,16 @@
                         success: function(data) {
                             console.log(data);
                             if (data.msg == "error") {
-                                alert('Kode produk sudah digunakan!');
+                                Swal.fire('Kode produk sudah digunakan!');
                                 $('#kode').focus().select();
                             } else {
+                                Swal.fire('SweetAlert2 is working!');
                                 $('#modal-form').modal('hide');
                                 table.ajax.reload();
                             }
                         },
                         error: function() {
-                            alert("Tidak dapat menyimpan data!");
+                            Swal.fire("Tidak dapat menyimpan data!");
                         }
                     });
                     return false;

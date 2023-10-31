@@ -28,7 +28,7 @@ class ProdukController extends Controller
                 })
                 ->addColumn('gambar', function ($item) {
                     $gambar = isset($item->gambar) ? $item->gambar : asset('kosong.jpg');
-                    $cek = "<img src=images/produk/'" . $gambar . "'>";
+                    $cek = "<img width='50' src=".asset('images/produk/'.$gambar.'').">";
                     return $cek;
                 })
                 ->addColumn('nomor', function ($item) {
@@ -82,6 +82,9 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
+       
+ 
+        
 
         $jml = Produk::where('kode_produk', '=', $request['kode'])->count();
         if ($jml < 1) {
@@ -95,15 +98,14 @@ class ProdukController extends Controller
             $produk->harga_jual = $request['harga_jual'];
             $produk->stok = $request['stok'];
             $produk->satuan = $request['satuan'];
-            $produk->gambar = $request['gambar'];
 
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
-                $nama_gambar = "produk." . $file->getClientOriginalExtension();
+                $nama_gambar = "produk." .time().".". $file->getClientOriginalExtension();
                 $lokasi = public_path('images/produk');
                 $file->move($lokasi, $nama_gambar);
                 $produk->gambar = $nama_gambar;
-            }
+           }
 
 
             $produk->save();

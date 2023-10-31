@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('title')
     Daftar Kategori
@@ -6,162 +6,108 @@
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active"><a href="{{ route('kategori.index') }}">Kategori</a></li>
+    <li class="active">Daftar Kategori</li>
 @endsection
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            {{-- {{ ucwords(Request::segment(1)) }} --}}
-            <a onclick="addForm()" class="btn btn-success"><i class="fa fa-plus-circle"></i> Tambah</a>
-        </div>
-        <div class="card-body">
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th width="30">No</th>
-                        <th>Nama Kategori</th>
-                        <th width="100">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            </div>
+            <div class="box-body table-responsive">
+                <table class="table table-stiped table-bordered">
+                    <thead>
+                        <th width="5%">No</th>
+                        <th>Kategori</th>
+                        <th width="15%"><i class="fa fa-cog"></i></th>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
+</div>
 
-    @include('kategori.form')
+@includeIf('kategori.form')
+@endsection
 
+@push('scripts')
+<script>
+    let table;
 
-
-    <script type="text/javascript">
-        var table, save_method;
-        $(function() {
-
-            // $.validator.setDefaults({
-            //     submitHandler: function() {
-            //         alert("Form successful submitted!");
-            //     }
-            // });
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            //untuk delete
-            $('body').on('click', '.delete', function() {
-                if (confirm("Delete Record?") == true) {
-                    var id = $(this).data('id');
-                    // ajax
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ url('kategori') }}",
-                        data: {
-                            id: id
-                        },
-                        dataType: 'json',
-                        success: function(res) {
-                            var oTable = $('.table').dataTable();
-                            oTable.fnDraw(false);
-                        }
-                    });
-                }
-            });
-
-            table = $('.table').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": '{!! route('kategori.index') !!}',
-                columns: [{
-                        data: 'id_kategori',
-                        name: 'id_kategori'
-                    },
-                    {
-                        data: 'nama_kategori',
-                        name: 'nama_kategori'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
-                ]
-            });
-
-            $('#modal-form form').on('submit', function(e) {
-                if (!e.isDefaultPrevented()) {
-                    var id = $('#id').val();
-                    if (save_method == "add") url = "{{ route('kategori.store') }}";
-                    else url = "kategori/" + id;
-
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        data: $('#modal-form form').serialize(),
-                        success: function(data) {
-                            $('#modal-form').modal('hide');
-                            table.ajax.reload();
-                        },
-                        error: function() {
-                            alert("Tidak dapat menyimpan data!");
-                        }
-                    });
-                    return false;
-                }
-            });
+    $(function () {
+        table = $('.table').DataTable({
+            processing: true,
+            autoWidth: false,
+            ajax: {
+                url: '{{ route('kategori.data') }}',
+            },
+            columns: [
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
+                {data: 'nama_kategori'},
+                {data: 'aksi', searchable: false, sortable: false},
+            ]
         });
 
-        function addForm() {
-            save_method = "add";
-            $('input[name=_method]').val('POST');
-            $('#modal-form').modal('show');
-            $('#modal-form form')[0].reset();
-            $('.modal-title').text('Tambah Kategori');
-        }
-
-        function editForm(id) {
-            save_method = "edit";
-            $('input[name=_method]').val('PATCH');
-            $('#modal-form form')[0].reset();
-            $.ajax({
-                url: "kategori/" + id + "/edit",
-                type: "GET",
-                dataType: "JSON",
-                success: function(data) {
-                    $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Kategori');
-
-                    $('#id').val(data.id_kategori);
-                    $('#nama').val(data.nama_kategori);
-
-                },
-                error: function() {
-                    alert("Tidak dapat menampilkan data!");
-                }
-            });
-        }
-
-        function deleteData(id) {
-            if (confirm("Apakah yakin data akan dihapus?")) {
-                $.ajax({
-                    url: "kategori/" + id,
-                    type: "POST",
-                    data: {
-                        '_method': 'DELETE',
-                        '_token': $('meta[name=csrf-token]').attr('content')
-                    },
-                    success: function(data) {
+        $('#modal-form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                    .done((response) => {
+                        $('#modal-form').modal('hide');
                         table.ajax.reload();
-                    },
-                    error: function() {
-                        alert("Tidak dapat menghapus data!");
-                    }
-                });
+                    })
+                    .fail((errors) => {
+                        alert('Tidak dapat menyimpan data');
+                        return;
+                    });
             }
+        });
+    });
+
+    function addForm(url) {
+        $('#modal-form').modal('show');
+        $('#modal-form .modal-title').text('Tambah Kategori');
+
+        $('#modal-form form')[0].reset();
+        $('#modal-form form').attr('action', url);
+        $('#modal-form [name=_method]').val('post');
+        $('#modal-form [name=nama_kategori]').focus();
+    }
+
+    function editForm(url) {
+        $('#modal-form').modal('show');
+        $('#modal-form .modal-title').text('Edit Kategori');
+
+        $('#modal-form form')[0].reset();
+        $('#modal-form form').attr('action', url);
+        $('#modal-form [name=_method]').val('put');
+        $('#modal-form [name=nama_kategori]').focus();
+
+        $.get(url)
+            .done((response) => {
+                $('#modal-form [name=nama_kategori]').val(response.nama_kategori);
+            })
+            .fail((errors) => {
+                alert('Tidak dapat menampilkan data');
+                return;
+            });
+    }
+
+    function deleteData(url) {
+        if (confirm('Yakin ingin menghapus data terpilih?')) {
+            $.post(url, {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'delete'
+                })
+                .done((response) => {
+                    table.ajax.reload();
+                })
+                .fail((errors) => {
+                    alert('Tidak dapat menghapus data');
+                    return;
+                });
         }
-    </script>
-@endsection
+    }
+</script>
+@endpush

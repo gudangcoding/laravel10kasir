@@ -1,105 +1,155 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\hash;
+
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-   public function index()
-   {
-      return view('user.index'); 
-   }
+    public function index()
+    {
+        return view('user.index');
+    }
 
-   public function listData()
-   {
-   
-     $user = User::where('level', '!=', 1)->orderBy('id', 'desc')->get();
-     $no = 0;
-     $data = array();
-     foreach($user as $list){
-       $no ++;
-       $row = array();
-       $row[] = $no;
-       $row[] = $list->name;
-       $row[] = $list->email;
-       $row[] = '<div class="btn-group">
-               <a onclick="editForm('.$list->id.')" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
-               <a onclick="deleteData('.$list->id.')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a></div>';
-       $data[] = $row;
-     }
+    public function data()
+    {
+        $user = User::isNotAdmin()->orderBy('id', 'desc')->get();
 
-     $output = array("data" => $data);
-     return response()->json($output);
-   }
+        return datatables()
+            ->of($user)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($user) {
+                return '
+                <div class="btn-group">
+                    <button type="button" onclick="editForm(`'. route('user.update', $user->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button type="button" onclick="deleteData(`'. route('user.destroy', $user->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
 
-   public function store(Request $request)
-   {
-      $user = new User;
-      $user->name = $request['nama'];
-      $user->email = $request['email'];
-      $user->password = bcrypt($request['password']);
-      $user->level = 2;
-      $user->foto = "user.png";
-      $user->save();
-   }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
 
-   public function edit($id)
-   {
-     $user = User::find($id);
-     echo json_encode($user);
-   }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->level = 2;
+        $user->foto = '/img/user.jpg';
+        $user->save();
 
-   public function update(Request $request, $id)
-   {
-      $user = User::find($id);
-      $user->name = $request['nama'];
-      $user->email = $request['email'];
-      if(!empty($request['password'])) $user->password = bcrypt($request['password']);
-      $user->update();
-   }
+        return response()->json('Data berhasil disimpan', 200);
+    }
 
-   public function destroy($id)
-   {
-      $user = User::find($id);
-      $user->delete();
-   }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $user = User::find($id);
 
-   public function profil()
-   {
-      $user = Auth::user();
-      return view('user.profil', compact('user')); 
-   }
+        return response()->json($user);
+    }
 
-   public function changeProfil(Request $request, $id)
-   {
-      $msg = "succcess";
-      $user = User::find($id);
-      if(!empty($request['password'])){
-        if(Hash::check($request['passwordlama'], $user->password)){
-         $user->password = bcrypt($request['password']);
-        }else{
-         $msg = 'error';
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if ($request->has('password') && $request->password != "") 
+            $user->password = bcrypt($request->password);
+        $user->update();
+
+        return response()->json('Data berhasil disimpan', 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $user = User::find($id)->delete();
+
+        return response(null, 204);
+    }
+
+    public function profil()
+    {
+        $profil = auth()->user();
+        return view('user.profil', compact('profil'));
+    }
+
+    public function updateProfil(Request $request)
+    {
+        $user = auth()->user();
+        
+        $user->name = $request->name;
+        if ($request->has('password') && $request->password != "") {
+            if (Hash::check($request->old_password, $user->password)) {
+                if ($request->password == $request->password_confirmation) {
+                    $user->password = bcrypt($request->password);
+                } else {
+                    return response()->json('Konfirmasi password tidak sesuai', 422);
+                }
+            } else {
+                return response()->json('Password lama tidak sesuai', 422);
+            }
         }
-      } 
 
-      if ($request->hasFile('foto')) {
-         $file = $request->file('foto');
-         $nama_gambar = "fotouser_".$id.".".$file->getClientOriginalExtension();
-         $lokasi = public_path('images');
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $nama = 'logo-' . date('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('/img'), $nama);
 
-         $file->move($lokasi, $nama_gambar);
-         $user->foto         = $nama_gambar;  
-         
-         $datagambar = $nama_gambar;
-      }else{
-         $datagambar = $user->foto; 
-      }
+            $user->foto = "/img/$nama";
+        }
 
-      $user->update();
-      echo json_encode(array('msg'=>$msg, 'url'=> asset('public/images/'.$datagambar))); 
-   }
+        $user->update();
+
+        return response()->json($user, 200);
+    }
 }

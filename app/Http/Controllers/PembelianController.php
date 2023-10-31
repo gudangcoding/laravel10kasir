@@ -1,120 +1,135 @@
 <?php
 
 namespace App\Http\Controllers;
-// use App\Http\Controllers\Redirect;
-use Illuminate\Support\Facades\Redirect;
+
 use Illuminate\Http\Request;
 use App\Models\Pembelian;
-use App\Models\Supplier;
 use App\Models\PembelianDetail;
 use App\Models\Produk;
+use App\Models\Supplier;
 
 class PembelianController extends Controller
 {
-   public function index()
-   {
-      $supplier = Supplier::all();
-      return view('pembelian.index', compact('supplier')); 
-   }
+    public function index()
+    {
+        $supplier = Supplier::orderBy('nama')->get();
 
-   public function listData()
-   {
-   
-     $pembelian = Pembelian::leftJoin('suppliers', 'suppliers.id_supplier', '=', 'pembelians.id_supplier')
-        ->orderBy('pembelians.id_pembelian', 'desc')
-        ->get();
-     $no = 0;
-     $data = array();
-     foreach($pembelian as $list){
-       $no ++;
-       $row = array();
-       $row[] = $no;
-       $row[] = tanggal_indonesia(substr($list->created_at, 0, 10), false);
-       $row[] = $list->nama;
-       $row[] = $list->total_item;
-       $row[] = "Rp. ".format_uang($list->total_harga);
-       $row[] = $list->diskon."%";
-       $row[] = "Rp. ".format_uang($list->bayar);
-       $row[] = '<div class="btn-group">
-               <a onclick="showDetail('.$list->id_pembelian.')" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
-               <a onclick="deleteData('.$list->id_pembelian.')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
-              </div>';
-       $data[] = $row;
-     }
+        return view('pembelian.index', compact('supplier'));
+    }
 
-     $output = array("data" => $data);
-     return response()->json($output);
-   }
+    public function data()
+    {
+        $pembelian = Pembelian::orderBy('id_pembelian', 'desc')->get();
 
-   public function show($id)
-   {
-   
-     $detail = PembelianDetail::leftJoin('produks', 'produks.kode_produk', '=', 'pembelian_details.kode_produk')
-        ->where('id_pembelian', '=', $id)
-        ->get();
-     $no = 0;
-     $data = array();
-     foreach($detail as $list){
-       $no ++;
-       $row = array();
-       $row[] = $no;
-       $row[] = $list->kode_produk;
-       $row[] = $list->nama_produk;
-       $row[] = "Rp. ".format_uang($list->harga_beli);
-       $row[] = $list->jumlah;
-       $row[] = "Rp. ".format_uang($list->harga_beli * $list->jumlah);
-       $data[] = $row;
-     }
-    
-     $output = array("data" => $data);
-     return response()->json($output);
-   }
+        return datatables()
+            ->of($pembelian)
+            ->addIndexColumn()
+            ->addColumn('total_item', function ($pembelian) {
+                return format_uang($pembelian->total_item);
+            })
+            ->addColumn('total_harga', function ($pembelian) {
+                return 'Rp. '. format_uang($pembelian->total_harga);
+            })
+            ->addColumn('bayar', function ($pembelian) {
+                return 'Rp. '. format_uang($pembelian->bayar);
+            })
+            ->addColumn('tanggal', function ($pembelian) {
+                return tanggal_indonesia($pembelian->created_at, false);
+            })
+            ->addColumn('supplier', function ($pembelian) {
+                return $pembelian->supplier->nama;
+            })
+            ->editColumn('diskon', function ($pembelian) {
+                return $pembelian->diskon . '%';
+            })
+            ->addColumn('aksi', function ($pembelian) {
+                return '
+                <div class="btn-group">
+                    <button onclick="showDetail(`'. route('pembelian.show', $pembelian->id_pembelian) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
+                    <button onclick="deleteData(`'. route('pembelian.destroy', $pembelian->id_pembelian) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
 
-   public function create($id)
-   {
-      $pembelian = new Pembelian;
-      $pembelian->id_supplier = $id;     
-      $pembelian->total_item = 0;     
-      $pembelian->total_harga = 0;     
-      $pembelian->diskon = 0;     
-      $pembelian->bayar = 0;     
-      $pembelian->save();
+    public function create($id)
+    {
+        $pembelian = new Pembelian();
+        $pembelian->id_supplier = $id;
+        $pembelian->total_item  = 0;
+        $pembelian->total_harga = 0;
+        $pembelian->diskon      = 0;
+        $pembelian->bayar       = 0;
+        $pembelian->save();
 
-      session(['idpembelian' => $pembelian->id_pembelian]);
-      session(['idsupplier' => $id]);
+        session(['id_pembelian' => $pembelian->id_pembelian]);
+        session(['id_supplier' => $pembelian->id_supplier]);
 
-      return Redirect::route('pembelian_detail.index');      
-   }
+        return redirect()->route('pembelian_detail.index');
+    }
 
-   public function store(Request $request)
-   {
-      $pembelian = Pembelian::find($request['idpembelian']);
-      $pembelian->total_item = $request['totalitem'];
-      $pembelian->total_harga = $request['total'];
-      $pembelian->diskon = $request['diskon'];
-      $pembelian->bayar = $request['bayar'];
-      $pembelian->update();
+    public function store(Request $request)
+    {
+        $pembelian = Pembelian::findOrFail($request->id_pembelian);
+        $pembelian->total_item = $request->total_item;
+        $pembelian->total_harga = $request->total;
+        $pembelian->diskon = $request->diskon;
+        $pembelian->bayar = $request->bayar;
+        $pembelian->update();
 
-      $detail = PembelianDetail::where('id_pembelian', '=', $request['idpembelian'])->get();
-      foreach($detail as $data){
-        $produk = Produk::where('kode_produk', '=', $data->kode_produk)->first();
-        $produk->stok += $data->jumlah;
-        $produk->update();
-      }
-      return Redirect::route('pembelian.index');
-   }
-   
-   public function destroy($id)
-   {
-      $pembelian = Pembelian::find($id);
-      $pembelian->delete();
+        $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
+        foreach ($detail as $item) {
+            $produk = Produk::find($item->id_produk);
+            $produk->stok += $item->jumlah;
+            $produk->update();
+        }
 
-      $detail = PembelianDetail::where('id_pembelian', '=', $id)->get();
-      foreach($detail as $data){
-        $produk = Produk::where('kode_produk', '=', $data->kode_produk)->first();
-        $produk->stok -= $data->jumlah;
-        $produk->update();
-        $data->delete();
-      }
-   }
+        return redirect()->route('pembelian.index');
+    }
+
+    public function show($id)
+    {
+        $detail = PembelianDetail::with('produk')->where('id_pembelian', $id)->get();
+
+        return datatables()
+            ->of($detail)
+            ->addIndexColumn()
+            ->addColumn('kode_produk', function ($detail) {
+                return '<span class="label label-success">'. $detail->produk->kode_produk .'</span>';
+            })
+            ->addColumn('nama_produk', function ($detail) {
+                return $detail->produk->nama_produk;
+            })
+            ->addColumn('harga_beli', function ($detail) {
+                return 'Rp. '. format_uang($detail->harga_beli);
+            })
+            ->addColumn('jumlah', function ($detail) {
+                return format_uang($detail->jumlah);
+            })
+            ->addColumn('subtotal', function ($detail) {
+                return 'Rp. '. format_uang($detail->subtotal);
+            })
+            ->rawColumns(['kode_produk'])
+            ->make(true);
+    }
+
+    public function destroy($id)
+    {
+        $pembelian = Pembelian::find($id);
+        $detail    = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
+        foreach ($detail as $item) {
+            $produk = Produk::find($item->id_produk);
+            if ($produk) {
+                $produk->stok -= $item->jumlah;
+                $produk->update();
+            }
+            $item->delete();
+        }
+
+        $pembelian->delete();
+
+        return response(null, 204);
+    }
 }

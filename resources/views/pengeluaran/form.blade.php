@@ -1,43 +1,36 @@
-<div class="modal" id="modal-form" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-     
-   <form class="form-horizontal" data-toggle="validator" method="post">
-   {{ csrf_field() }} {{ method_field('POST') }}
-   
-   <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span> </button>
-      <h3 class="modal-title"></h3>
-   </div>
-            
-<div class="modal-body">
-   
-   <input type="hidden" id="id" name="id">
-   <div class="form-group">
-      <label for="jenis" class="col-md-3 control-label">Jenis Pengeluaran</label>
-      <div class="col-md-8">
-         <input id="jenis" type="text" class="form-control" name="jenis" autofocus required>
-         <span class="help-block with-errors"></span>
-      </div>
-   </div>
+<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form">
+    <div class="modal-dialog modal-lg" role="document">
+        <form action="" method="post" class="form-horizontal">
+            @csrf
+            @method('post')
 
-   <div class="form-group">
-      <label for="nominal" class="col-md-3 control-label">Nominal</label>
-      <div class="col-md-3">
-         <input id="nominal" type="number" class="form-control" name="nominal" required>
-         <span class="help-block with-errors"></span>
-      </div>
-   </div>
-   
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="deskripsi" class="col-lg-2 col-lg-offset-1 control-label">Deskripsi</label>
+                        <div class="col-lg-6">
+                            <input type="text" name="deskripsi" id="deskripsi" class="form-control" required autofocus>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nominal" class="col-lg-2 col-lg-offset-1 control-label">Nominal</label>
+                        <div class="col-lg-6">
+                            <input type="number" name="nominal" id="nominal" class="form-control" required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-flat btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                    <button type="button" class="btn btn-sm btn-flat btn-warning" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Batal</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-   
-   <div class="modal-footer">
-      <button type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o"></i> Simpan </button>
-      <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Batal</button>
-   </div>
-      
-   </form>
-
-         </div>
-      </div>
-   </div>

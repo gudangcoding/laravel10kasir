@@ -1,39 +1,39 @@
-<div class="modal" id="modal-member" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-     
-   <div class="modal-header">
-      <h3 class="modal-title">Cari Member</h3>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times; </span> </button>
-     
-   </div>
-            
-<div class="modal-body">
-   <table class="table table-striped tabel-produk">
-      <thead>
-         <tr>
-            <th>Kode Member</th>
-            <th>Nama Member</th>
-            <th>Alamat</th>
-            <th>Telpon</th>
-            <th>Aksi</th>
-         </tr>
-      </thead>
-      <tbody>
-         @foreach($member as $data)
-         <tr>
-            <th>{{ $data->kode_member }}</th>
-            <th>{{ $data->nama }}</th>
-            <th>{{ $data->alamat }}</th>
-            <th>{{ $data->telepon }}</th>
-            <th><a onclick="selectMember({{ $data->kode_member }})" class="btn btn-primary"><i class="fa fa-check-circle"></i> Pilih</a></th>
-          </tr>
-         @endforeach
-      </tbody>
-   </table>
-
+<div class="modal fade" id="modal-member" tabindex="-1" role="dialog" aria-labelledby="modal-member">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Pilih Member</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered table-member">
+                    <thead>
+                        <th width="5%">No</th>
+                        <th>Nama</th>
+                        <th>Telepon</th>
+                        <th>Alamat</th>
+                        <th><i class="fa fa-cog"></i></th>
+                    </thead>
+                    <tbody>
+                        @foreach ($member as $key => $item)
+                            <tr>
+                                <td width="5%">{{ $key+1 }}</td>
+                                <td>{{ $item->nama }}</td>
+                                <td>{{ $item->telepon }}</td>
+                                <td>{{ $item->alamat }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary btn-xs btn-flat"
+                                        onclick="pilihMember('{{ $item->id_member }}', '{{ $item->kode_member }}')">
+                                        <i class="fa fa-check-circle"></i>
+                                        Pilih
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-      
-         </div>
-      </div>
-   </div>

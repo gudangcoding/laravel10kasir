@@ -4,63 +4,110 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pengeluaran;
-use Yajra\DataTables\Facades\DataTables;
 
 class PengeluaranController extends Controller
 {
     public function index()
     {
-       return view('pengeluaran.index'); 
+        return view('pengeluaran.index');
     }
 
-    public function listData()
+    public function data()
     {
-    
-      $pengeluaran = Pengeluaran::orderBy('id_pengeluaran', 'desc')->get();
-      $no = 0;
-      $data = array();
-      foreach($pengeluaran as $list){
-         $no ++;
-         $row = array();
-         $row[] = $no;
-         $row[] = tanggal_indonesia(substr($list->created_at, 0, 10), false);
-         $row[] = $list->jenis_pengeluaran;
-         $row[] = "Rp. ".format_uang($list->nominal);
-         $row[] = '<div class="btn-group">
-                    <a onclick="editForm('.$list->id_pengeluaran.')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
-                    <a onclick="deleteData('.$list->id_pengeluaran.')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a></div>';
-         $data[] = $row;
-      }
+        $pengeluaran = Pengeluaran::orderBy('id_pengeluaran', 'desc')->get();
 
-      return Datatables::of($data)->escapeColumns([])->make(true);
+        return datatables()
+            ->of($pengeluaran)
+            ->addIndexColumn()
+            ->addColumn('created_at', function ($pengeluaran) {
+                return tanggal_indonesia($pengeluaran->created_at, false);
+            })
+            ->addColumn('nominal', function ($pengeluaran) {
+                return format_uang($pengeluaran->nominal);
+            })
+            ->addColumn('aksi', function ($pengeluaran) {
+                return '
+                <div class="btn-group">
+                    <button type="button" onclick="editForm(`'. route('pengeluaran.update', $pengeluaran->id_pengeluaran) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button type="button" onclick="deleteData(`'. route('pengeluaran.destroy', $pengeluaran->id_pengeluaran) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        $pengeluaran = new Pengeluaran;
-        $pengeluaran->jenis_pengeluaran   = $request['jenis'];
-        $pengeluaran->nominal = $request['nominal'];
-        $pengeluaran->save();
+        $pengeluaran = Pengeluaran::create($request->all());
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $pengeluaran = Pengeluaran::find($id);
+
+        return response()->json($pengeluaran);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-      $pengeluaran = Pengeluaran::find($id);
-      echo json_encode($pengeluaran);
+        //
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
-        $pengeluaran = Pengeluaran::find($id);
-        $pengeluaran->jenis_pengeluaran   = $request['jenis'];
-        $pengeluaran->nominal = $request['nominal'];
-        $pengeluaran->update();
+        $pengeluaran = Pengeluaran::find($id)->update($request->all());
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        $pengeluaran = Pengeluaran::find($id);
-        $pengeluaran->delete();
-    }
+        $pengeluaran = Pengeluaran::find($id)->delete();
 
+        return response(null, 204);
+    }
 }

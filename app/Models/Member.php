@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
-    protected $table = 'members';
-	protected $primaryKey = 'id_member';
+    use HasFactory;
 
-	public function penjualan(){
-      return $this->hasMany('App\Penjualan', 'id_supplier');
-    }
+    protected $table = 'member';
+    protected $primaryKey = 'id_member';
+    protected $guarded = [];
 }

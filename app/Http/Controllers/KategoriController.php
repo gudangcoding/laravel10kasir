@@ -4,95 +4,114 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kategori;
-use Yajra\DataTables\Facades\DataTables;
 
 class KategoriController extends Controller
 {
-   public function index(Request $request)
-   {
-      if ($request->ajax()) {
-         $data = Kategori::select('*');
-         return Datatables::of($data)
-                 ->addIndexColumn()
-                 ->addColumn('action', function($row){
-                  $btn = '<div class="btn-group">
-                  <a onclick="editForm('.$row->id_kategori.')" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                  <a onclick="deleteData('.$row->id_kategori.')" class=" btn btn-danger btn-sm"><i class="fa fa-trash"></i></a></div>';
-               return $btn;
-                 })
-                 ->rawColumns(['action'])
-                 ->make(true);
-     }
-   //   $segment = ucwords($request->segment(1));
-     //dd($segment);
-      // return view('kategori.index', compact('segment'));
-      return view('kategori.index');
-   }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('kategori.index');
+    }
 
-   public function data()
-   {
-   
-     $kategori = Kategori::orderBy('id_kategori', 'desc')->get();
-     $no = 0;
-     $data = array();
-     foreach($kategori as $list){
-       $no ++;
-       $row = array();
-       $row[] = $no;
-       $row[] = $list->nama_kategori;
-       $row[] = '<div class="btn-group">
-               <a onclick="editForm('.$list->id_kategori.')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
-               <a onclick="deleteData('.$list->id_kategori.')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a></div>';
-       $data[] = $row;
-     }
+    public function data()
+    {
+        $kategori = Kategori::orderBy('id_kategori', 'desc')->get();
 
-     $output = array("data" => $data);
-     return response()->json($output);
-   }
+        return datatables()
+            ->of($kategori)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($kategori) {
+                return '
+                <div class="btn-group">
+                    <button onclick="editForm(`'. route('kategori.update', $kategori->id_kategori) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="deleteData(`'. route('kategori.destroy', $kategori->id_kategori) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
 
-   public function store(Request $request)
-   {
-      $kategori = new Kategori;
-      $kategori->nama_kategori = $request['nama'];
-      $kategori->save();
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
 
-      // $request->validate([
-      //    'name' => 'required',
-      //    'email' => 'required',
-      //    'address' => 'required'
-      //    ]);
-      //    $company = new Company;
-      //    $company->name = $request->name;
-      //    $company->email = $request->email;
-      //    $company->address = $request->address;
-      //    $company->save();
-      //    return redirect()->route('companies.index')
-      //    ->with('success','Company has been created successfully.');
-      //    }
-   }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $kategori = new Kategori();
+        $kategori->nama_kategori = $request->nama_kategori;
+        $kategori->save();
 
-   public function edit($id)
-   {
-     $kategori = Kategori::find($id);
-     echo json_encode($kategori);
-   }
+        return response()->json('Data berhasil disimpan', 200);
+    }
 
-   public function update(Request $request, $id)
-   {
-      $kategori = Kategori::find($id);
-      $kategori->nama_kategori = $request['nama'];
-      $kategori->update();
-   }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $kategori = Kategori::find($id);
 
-   public function destroy($id)
-   {
-      $kategori = Kategori::find($id);
-      $kategori->delete();
-   }
+        return response()->json($kategori);
+    }
 
-   // public function destroy(Request $request)
-   // {
-   //    $com = Kategori::where('id',$request->id)->delete();
-   //    return Response()->json($com);
-   // }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $kategori = Kategori::find($id);
+        $kategori->nama_kategori = $request->nama_kategori;
+        $kategori->update();
+
+        return response()->json('Data berhasil disimpan', 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $kategori = Kategori::find($id);
+        $kategori->delete();
+
+        return response(null, 204);
+    }
 }

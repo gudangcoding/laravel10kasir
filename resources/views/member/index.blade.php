@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('title')
     Daftar Member
@@ -6,152 +6,140 @@
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active"><a href="">Member</a></li>
+    <li class="active">Daftar Member</li>
 @endsection
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <a onclick="addForm()" class="btn btn-success"><i class="fa fa-plus-circle"></i> Tambah</a>
-            <a onclick="printCard()" class="btn btn-info"><i class="fa fa-credit-card"></i> Cetak Kartu</a>
-        </div>
-        <div class="card-body">
-
-            <form method="post" id="form-member">
-                {{ csrf_field() }}
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th width="20"><input type="checkbox" value="1" id="select-all"></th>
-                            <th width="20">No</th>
-                            <th>Kode Member</th>
-                            <th>Nama Member</th>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+                <button onclick="cetakMember('{{ route('member.cetak_member') }}')" class="btn btn-info btn-xs btn-flat"><i class="fa fa-id-card"></i> Cetak Member</button>
+            </div>
+            <div class="box-body table-responsive">
+                <form action="" method="post" class="form-member">
+                    @csrf
+                    <table class="table table-stiped table-bordered">
+                        <thead>
+                            <th width="5%">
+                                <input type="checkbox" name="select_all" id="select_all">
+                            </th>
+                            <th width="5%">No</th>
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th>Telepon</th>
                             <th>Alamat</th>
-                            <th>Telpon</th>
-                            <th width="100">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </form>
-
+                            <th width="15%"><i class="fa fa-cog"></i></th>
+                        </thead>
+                    </table>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 
+@includeIf('member.form')
+@endsection
 
-    @include('member.form')
+@push('scripts')
+<script>
+    let table;
 
-
-    @yield('script')
-    <script type="text/javascript">
-        var table, save_method;
-        $(function() {
-            table = $('.table').DataTable({
-                "processing": true,
-                "ajax": {
-                    "url": "{{ route('member.data') }}",
-                    "type": "GET"
-                },
-                'columnDefs': [{
-                    'targets': 0,
-                    'searchable': false,
-                    'orderable': false
-                }],
-                'order': [1, 'asc']
-            });
-
-            $('#select-all').click(function() {
-                $('input[type="checkbox"]').prop('checked', this.checked);
-            });
-
-            $('#modal-form form').validator().on('submit', function(e) {
-                if (!e.isDefaultPrevented()) {
-                    var id = $('#id').val();
-                    if (save_method == "add") url = "{{ route('member.store') }}";
-                    else url = "member/" + id;
-
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        data: $('#modal-form form').serialize(),
-                        dataType: 'JSON',
-                        success: function(data) {
-                            if (data.msg == "error") {
-                                alert('Kode member sudah digunakan!');
-                                $('#kode').focus().select();
-                            } else {
-                                $('#modal-form').modal('hide');
-                                table.ajax.reload();
-                            }
-                        },
-                        error: function() {
-                            alert("Tidak dapat menyimpan data!");
-                        }
-                    });
-                    return false;
-                }
-            });
+    $(function () {
+        table = $('.table').DataTable({
+            processing: true,
+            autoWidth: false,
+            ajax: {
+                url: '{{ route('member.data') }}',
+            },
+            columns: [
+                {data: 'select_all', searchable: false, sortable: false},
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
+                {data: 'kode_member'},
+                {data: 'nama'},
+                {data: 'telepon'},
+                {data: 'alamat'},
+                {data: 'aksi', searchable: false, sortable: false},
+            ]
         });
 
-        function addForm() {
-            save_method = "add";
-            $('input[name=_method]').val('POST');
-            $('#modal-form').modal('show');
-            $('#modal-form form')[0].reset();
-            $('.modal-title').text('Tambah Member');
-            $('#kode').attr('readonly', false);
-        }
-
-        function editForm(id) {
-            save_method = "edit";
-            $('input[name=_method]').val('PATCH');
-            $('#modal-form form')[0].reset();
-            $.ajax({
-                url: "member/" + id + "/edit",
-                type: "GET",
-                dataType: "JSON",
-                success: function(data) {
-                    $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Member');
-
-                    $('#id').val(data.id_member);
-                    $('#kode').val(data.kode_member).attr('readonly', true);
-                    $('#nama').val(data.nama);
-                    $('#alamat').val(data.alamat);
-                    $('#telpon').val(data.telpon);
-
-                },
-                error: function() {
-                    alert("Tidak dapat menampilkan data!");
-                }
-            });
-        }
-
-        function deleteData(id) {
-            if (confirm("Apakah yakin data akan dihapus?")) {
-                $.ajax({
-                    url: "member/" + id,
-                    type: "POST",
-                    data: {
-                        '_method': 'DELETE',
-                        '_token': $('meta[name=csrf-token]').attr('content')
-                    },
-                    success: function(data) {
+        $('#modal-form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                    .done((response) => {
+                        $('#modal-form').modal('hide');
                         table.ajax.reload();
-                    },
-                    error: function() {
-                        alert("Tidak dapat menghapus data!");
-                    }
-                });
+                    })
+                    .fail((errors) => {
+                        alert('Tidak dapat menyimpan data');
+                        return;
+                    });
             }
-        }
+        });
 
-        function printCard() {
-            if ($('input:checked').length < 1) {
-                alert('Pilih data yang akan dicetak!');
-            } else {
-                $('#form-member').attr('target', '_blank').attr('action', "member/cetak").submit();
-            }
+        $('[name=select_all]').on('click', function () {
+            $(':checkbox').prop('checked', this.checked);
+        });
+    });
+
+    function addForm(url) {
+        $('#modal-form').modal('show');
+        $('#modal-form .modal-title').text('Tambah Member');
+
+        $('#modal-form form')[0].reset();
+        $('#modal-form form').attr('action', url);
+        $('#modal-form [name=_method]').val('post');
+        $('#modal-form [name=nama]').focus();
+    }
+
+    function editForm(url) {
+        $('#modal-form').modal('show');
+        $('#modal-form .modal-title').text('Edit Member');
+
+        $('#modal-form form')[0].reset();
+        $('#modal-form form').attr('action', url);
+        $('#modal-form [name=_method]').val('put');
+        $('#modal-form [name=nama]').focus();
+
+        $.get(url)
+            .done((response) => {
+                $('#modal-form [name=nama]').val(response.nama);
+                $('#modal-form [name=telepon]').val(response.telepon);
+                $('#modal-form [name=alamat]').val(response.alamat);
+            })
+            .fail((errors) => {
+                alert('Tidak dapat menampilkan data');
+                return;
+            });
+    }
+
+    function deleteData(url) {
+        if (confirm('Yakin ingin menghapus data terpilih?')) {
+            $.post(url, {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'delete'
+                })
+                .done((response) => {
+                    table.ajax.reload();
+                })
+                .fail((errors) => {
+                    alert('Tidak dapat menghapus data');
+                    return;
+                });
         }
-    </script>
-@endsection
+    }
+
+    function cetakMember(url) {
+        if ($('input:checked').length < 1) {
+            alert('Pilih data yang akan dicetak');
+            return;
+        } else {
+            $('.form-member')
+                .attr('target', '_blank')
+                .attr('action', url)
+                .submit();
+        }
+    }
+</script>
+@endpush

@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
 {
-   protected $table = 'suppliers';
-   protected $primaryKey = 'id_supplier';
+    use HasFactory;
 
-   public function pembelian(){
-      return $this->hasMany('App\Pembelian', 'id_supplier');
-   }
+    protected $table = 'supplier';
+    protected $primaryKey = 'id_supplier';
+    protected $guarded = [];
 }

@@ -1,22 +1,21 @@
 <?php
 
+use App\Http\Controllers\{
+    DashboardController,
+    KategoriController,
+    LaporanController,
+    ProdukController,
+    MemberController,
+    PengeluaranController,
+    PembelianController,
+    PembelianDetailController,
+    PenjualanController,
+    PenjualanDetailController,
+    SettingController,
+    SupplierController,
+    UserController,
+};
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\MemberController;
-use App\Http\Controllers\PengeluaranController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PembelianController;
-use App\Http\Controllers\PembelianDetailController;
-use App\Http\Controllers\PenjualanController;
-use App\Http\Controllers\PenjualanDetailController;
-use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\ImageController;
-use App\Models\Kategori;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,105 +23,81 @@ use App\Models\Kategori;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('penjualan/data', [PenjualanController::class,'listData'])->name('penjualan.data');
-
-
-Route::controller(ImageController::class)->group(function(){
-   Route::get('image-upload', 'index');
-   Route::post('image-upload', 'store')->name('image.store');
+Route::get('/', function () {
+    return redirect()->route('login');
 });
 
-Auth::routes();
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::group(['middleware' => 'level:1'], function () {
+        Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
+        Route::resource('/kategori', KategoriController::class);
 
-Route::group(['middleware' => 'web'], function(){
-   Route::get('user/profil', [UserController::class,'profil'])->name('profil');
-   Route::patch('user/{id}/change', [UserController::class,'changeProfil'])->name('changeProfil');;
+        Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');
+        Route::post('/produk/delete-selected', [ProdukController::class, 'deleteSelected'])->name('produk.delete_selected');
+        Route::post('/produk/cetak-barcode', [ProdukController::class, 'cetakBarcode'])->name('produk.cetak_barcode');
+        Route::resource('/produk', ProdukController::class);
 
-   Route::get('transaksi/baru', [PenjualanDetailController::class,'newSession'])->name('transaksi.new');
-   Route::get('transaksi/{id}/data', [PenjualanDetailController::class,'listData'])->name('transaksi.data');
-   Route::get('transaksi/cetaknota', [PenjualanDetailController::class,'printNota'])->name('transaksi.cetak');
-   Route::get('transaksi/notapdf', [PenjualanDetailController::class,'notaPDF'])->name('transaksi.pdf');
-   Route::post('transaksi/simpan', [PenjualanDetailController::class,'store']);
-   Route::get('transaksi/loadform/{diskon}/{total}/{diterima}', [PenjualanDetailController::class,'loadForm']);
-   Route::resource('transaksi', PenjualanDetailController::class);
+        Route::get('/member/data', [MemberController::class, 'data'])->name('member.data');
+        Route::post('/member/cetak-member', [MemberController::class, 'cetakMember'])->name('member.cetak_member');
+        Route::resource('/member', MemberController::class);
+
+        Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
+        Route::resource('/supplier', SupplierController::class);
+
+        Route::get('/pengeluaran/data', [PengeluaranController::class, 'data'])->name('pengeluaran.data');
+        Route::resource('/pengeluaran', PengeluaranController::class);
+
+        Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
+        Route::get('/pembelian/{id}/create', [PembelianController::class, 'create'])->name('pembelian.create');
+        Route::resource('/pembelian', PembelianController::class)
+            ->except('create');
+
+        Route::get('/pembelian_detail/{id}/data', [PembelianDetailController::class, 'data'])->name('pembelian_detail.data');
+        Route::get('/pembelian_detail/loadform/{diskon}/{total}', [PembelianDetailController::class, 'loadForm'])->name('pembelian_detail.load_form');
+        Route::resource('/pembelian_detail', PembelianDetailController::class)
+            ->except('create', 'show', 'edit');
+
+        Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
+        Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');
+        Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penjualan.show');
+        Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
+    });
+
+    Route::group(['middleware' => 'level:1,2'], function () {
+        Route::get('/transaksi/baru', [PenjualanController::class, 'create'])->name('transaksi.baru');
+        Route::post('/transaksi/simpan', [PenjualanController::class, 'store'])->name('transaksi.simpan');
+        Route::get('/transaksi/selesai', [PenjualanController::class, 'selesai'])->name('transaksi.selesai');
+        Route::get('/transaksi/nota-kecil', [PenjualanController::class, 'notaKecil'])->name('transaksi.nota_kecil');
+        Route::get('/transaksi/nota-besar', [PenjualanController::class, 'notaBesar'])->name('transaksi.nota_besar');
+
+        Route::get('/transaksi/{id}/data', [PenjualanDetailController::class, 'data'])->name('transaksi.data');
+        Route::get('/transaksi/loadform/{diskon}/{total}/{diterima}', [PenjualanDetailController::class, 'loadForm'])->name('transaksi.load_form');
+        Route::resource('/transaksi', PenjualanDetailController::class)
+            ->except('create', 'show', 'edit');
+    });
+
+    Route::group(['middleware' => 'level:1'], function () {
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/data/{awal}/{akhir}', [LaporanController::class, 'data'])->name('laporan.data');
+        Route::get('/laporan/pdf/{awal}/{akhir}', [LaporanController::class, 'exportPDF'])->name('laporan.export_pdf');
+
+        Route::get('/user/data', [UserController::class, 'data'])->name('user.data');
+        Route::resource('/user', UserController::class);
+
+        Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+        Route::get('/setting/first', [SettingController::class, 'show'])->name('setting.show');
+        Route::post('/setting', [SettingController::class, 'update'])->name('setting.update');
+    });
+ 
+    Route::group(['middleware' => 'level:1,2'], function () {
+        Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
+        Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');
+    });
 });
-
-Route::group(['middleware' => ['web', 'cekuser:1' ]], function(){
-   Route::get('kategori/data', [KategoriController::class,'listData'])->name('data');
-   Route::resource('kategori', KategoriController::class);
-
-   Route::get('produk/data', [ProdukController::class,'listData'])->name('data');
-   Route::post('produk/hapus', [ProdukController::class, 'deleteSelected'])->name('deleteSelected');
-   Route::post('produk/cetak', [ProdukController::class, 'printBarcode'])->name('printBarcode');
-   Route::resource('produk', ProdukController::class);
-
-   Route::get('supplier/data', [SupplierController::class,'listData'])->name('supplier.data');
-   Route::resource('supplier', SupplierController::class);
-
-   Route::get('member/data', [MemberController::class,'listData'])->name('member.data');
-   Route::post('member/cetak', [MemberController::class,'printCard'])->name('member.printCard');
-   Route::resource('member', MemberController::class);
-
-   Route::get('pengeluaran/data', [PengeluaranController::class,'listData'])->name('pengeluaran.data');
-   Route::resource('pengeluaran', PengeluaranController::class);
-
-
-   Route::get('user/data', [UserController::class,'listData'])->name('user.data');
-   Route::resource('user', UserController::class);
-
-   Route::get('pembelian/data', [PembelianController::class,'listData'])->name('pembelian.data');
-   Route::get('pembelian/{id}/tambah', [PembelianController::class,'create']);
-   Route::get('pembelian/{id}/lihat', [PembelianController::class,'show']);
-   Route::resource('pembelian', PembelianController::class);   
-
-   Route::get('pembelian_detail/{id}/data', [PembelianDetailController::class,'listData'])->name('pembelian_detail.data');
-   Route::get('pembelian_detail/loadform/{diskon}/{total}', [PembelianDetailController::class,'loadForm']);
-   Route::resource('pembelian_detail', PembelianDetailController::class);   
-
-   Route::get('penjualan/data', [PenjualanController::class,'listData'])->name('penjualan.data');
-   Route::get('penjualan/{id}/lihat', [PenjualanController::class,'show']);
-   Route::resource('penjualan', PenjualanController::class);
-   Route::get('penjualan/kasir', [PenjualanController::class,'kasir'])->name('penjualan.kasir');
-
-   Route::get('laporan', [LaporanController::class,'index'])->name('laporan.index');
-   Route::post('laporan', [LaporanController::class,'refresh'])->name('laporan.refresh');
-   Route::get('laporan/data/{awal}/{akhir}', [LaporanController::class,'listData'])->name('laporan.data'); 
-   Route::get('laporan/pdf/{awal}/{akhir}', [LaporanController::class,'exportPDF']);
-
-   Route::resource('setting', SettingController::class);
-});
-
-Auth::routes();
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-
-
-
-
-//printBarcode
-//contoh
-// Route::controller(ItemController::class)->group(function(){
-
-//    Route::get('items', 'index')->name('items.index');
-
-//    Route::post('items', 'store')->name('items.store');
-
-//    Route::get('items/create', 'create')->name('items.create');
-
-//    Route::get('items/{item}', 'show')->name('items.show');
-
-//    Route::put('items/{item}', 'update')->name('items.update');
-
-//    Route::delete('items/{item}', 'destroy')->name('items.destroy');
-
-//    Route::get('items/{item}/edit', 'edit')->name('items.edit');
-
-// });

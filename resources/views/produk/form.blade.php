@@ -1,113 +1,76 @@
-<div class="modal" id="modal-form" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form">
+    <div class="modal-dialog modal-lg" role="document">
+        <form action="" method="post" class="form-horizontal">
+            @csrf
+            @method('post')
 
-            <form class="form-horizontal" data-toggle="validator" method="post" enctype="multipart/form-data">
-                {{ csrf_field() }} {{ method_field('POST') }}
-
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title"></h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true"> &times; </span> </button>
-
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
                 </div>
-
                 <div class="modal-body">
-
-                    <input type="hidden" id="id" name="id">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="kode" class=" control-label">Kode Produk</label>
-
-                                <input id="kode" type="number" class="form-control" name="kode" autofocus
-                                    required>
-                                <span class="help-block with-errors"></span>
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="nama" class=" control-label">Nama Produk</label>
-                                <input id="nama" type="text" class="form-control" name="nama" required>
-                                <span class="help-block with-errors"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="kategori" class=" control-label">Kategori</label>
-                                <select id="kategori" class="form-control" name="kategori" required>
-                                    <option value=""> -- Pilih Kategori-- </option>
-                                    @foreach ($kategori as $list)
-                                        <option value="{{ $list->id_kategori }}">{{ $list->nama_kategori }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="help-block with-errors"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="merk" class=" control-label">Merk</label>
-                                <input id="merk" type="text" class="form-control" name="merk" required>
-                                <span class="help-block with-errors"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="merk" class=" control-label">Gambar Produk</label>
-                                <input type="file" id="gambar" class="form-control" name="gambar">
-                                <span class="help-block with-errors"></span>
-                            </div>
+                    <div class="form-group row">
+                        <label for="nama_produk" class="col-lg-2 col-lg-offset-1 control-label">Nama</label>
+                        <div class="col-lg-6">
+                            <input type="text" name="nama_produk" id="nama_produk" class="form-control" required autofocus>
+                            <span class="help-block with-errors"></span>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="harga_beli" class=" control-label">Harga Beli</label>
-                                <input id="harga_beli" type="text" class="form-control" name="harga_beli" required>
-                                <span class="help-block with-errors"></span>
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="diskon" class=" control-label">Diskon</label>
-                                <input id="diskon" type="text" class="form-control" name="diskon" required>
-                                <span class="help-block with-errors"></span>
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="harga_jual" class=" control-label">Harga Jual</label>
-                                <input id="harga_jual" type="text" class="form-control" name="harga_jual" required>
-                                <span class="help-block with-errors"></span>
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="stok" class=" control-label">Stok</label>
-                                <input id="stok" type="text" class="form-control" name="stok" required>
-                                <span class="help-block with-errors"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="stok" class=" control-label">Satuan</label>
-                                <select name="satuan" id="satuan" class="form-control">
-                                    <option value="">Pilih Satuan</option>
-                                    <option value="dus">Dus</option>
-                                    <option value="pcs">Pcs</option>
-                                    <option value="pak">Pak</option>
-                                    <option value="rcg">Renceng</option>
-                                    <option value="ktg">Kantong</option>
-                                    <option value="kg">Kilogram</option>
-                                </select>
-                                <span class="help-block with-errors"></span>
-                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id_kategori" class="col-lg-2 col-lg-offset-1 control-label">Kategori</label>
+                        <div class="col-lg-6">
+                            <select name="id_kategori" id="id_kategori" class="form-control" required>
+                                <option value="">Pilih Kategori</option>
+                                @foreach ($kategori as $key => $item)
+                                <option value="{{ $key }}">{{ $item }}</option>
+                                @endforeach
+                            </select>
+                            <span class="help-block with-errors"></span>
                         </div>
-
+                    </div>
+                    <div class="form-group row">
+                        <label for="merk" class="col-lg-2 col-lg-offset-1 control-label">Merk</label>
+                        <div class="col-lg-6">
+                            <input type="text" name="merk" id="merk" class="form-control">
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="harga_beli" class="col-lg-2 col-lg-offset-1 control-label">Harga Beli</label>
+                        <div class="col-lg-6">
+                            <input type="number" name="harga_beli" id="harga_beli" class="form-control" required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="harga_jual" class="col-lg-2 col-lg-offset-1 control-label">Harga Jual</label>
+                        <div class="col-lg-6">
+                            <input type="number" name="harga_jual" id="harga_jual" class="form-control" required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="diskon" class="col-lg-2 col-lg-offset-1 control-label">Diskon</label>
+                        <div class="col-lg-6">
+                            <input type="number" name="diskon" id="diskon" class="form-control" value="0">
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="stok" class="col-lg-2 col-lg-offset-1 control-label">Stok</label>
+                        <div class="col-lg-6">
+                            <input type="number" name="stok" id="stok" class="form-control" required value="0">
+                            <span class="help-block with-errors"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal"><i
-                            class="fa fa-arrow-circle-left"></i> Batal</button>
-                    <button type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o"></i> Simpan
-                    </button>
-
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-flat btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                    <button type="button" class="btn btn-sm btn-flat btn-warning" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Batal</button>
                 </div>
-
-            </form>
-
-        </div>
+            </div>
+        </form>
     </div>
 </div>

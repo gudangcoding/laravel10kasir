@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('title')
     Daftar Supplier
@@ -6,120 +6,114 @@
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active"><a href="">Supplier</a></li>
+    <li class="active">Daftar Supplier</li>
 @endsection
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <a onclick="addForm()" class="btn btn-success"><i class="fa fa-plus-circle"></i> Tambah</a>
-        </div>
-        <div class="card-body">
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th width="30">No</th>
-                        <th>Nama Supplier</th>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            </div>
+            <div class="box-body table-responsive">
+                <table class="table table-stiped table-bordered">
+                    <thead>
+                        <th width="5%">No</th>
+                        <th>Nama</th>
+                        <th>Telepon</th>
                         <th>Alamat</th>
-                        <th>Telpon</th>
-                        <th width="100">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-
+                        <th width="15%"><i class="fa fa-cog"></i></th>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
+</div>
 
+@includeIf('supplier.form')
+@endsection
 
-    @include('supplier.form')
+@push('scripts')
+<script>
+    let table;
 
-
-
-    <script type="text/javascript">
-        var table, save_method;
-        $(function() {
-            table = $('.table').DataTable({
-                "processing": true,
-                "ajax": {
-                    "url": "{{ route('supplier.data') }}",
-                    "type": "GET"
-                }
-            });
-
-            $('#modal-form form').validator().on('submit', function(e) {
-                if (!e.isDefaultPrevented()) {
-                    var id = $('#id').val();
-                    if (save_method == "add") url = "{{ route('supplier.store') }}";
-                    else url = "supplier/" + id;
-
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        data: $('#modal-form form').serialize(),
-                        success: function(data) {
-                            $('#modal-form').modal('hide');
-                            table.ajax.reload();
-                        },
-                        error: function() {
-                            alert("Tidak dapat menyimpan data!");
-                        }
-                    });
-                    return false;
-                }
-            });
+    $(function () {
+        table = $('.table').DataTable({
+            processing: true,
+            autoWidth: false,
+            ajax: {
+                url: '{{ route('supplier.data') }}',
+            },
+            columns: [
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
+                {data: 'nama'},
+                {data: 'telepon'},
+                {data: 'alamat'},
+                {data: 'aksi', searchable: false, sortable: false},
+            ]
         });
 
-        function addForm() {
-            save_method = "add";
-            $('input[name=_method]').val('POST');
-            $('#modal-form').modal('show');
-            $('#modal-form form')[0].reset();
-            $('.modal-title').text('Tambah Supplier');
-        }
-
-        function editForm(id) {
-            save_method = "edit";
-            $('input[name=_method]').val('PATCH');
-            $('#modal-form form')[0].reset();
-            $.ajax({
-                url: "supplier/" + id + "/edit",
-                type: "GET",
-                dataType: "JSON",
-                success: function(data) {
-                    $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Supplier');
-
-                    $('#id').val(data.id_supplier);
-                    $('#nama').val(data.nama);
-                    $('#alamat').val(data.alamat);
-                    $('#telpon').val(data.telpon);
-
-                },
-                error: function() {
-                    alert("Tidak dapat menampilkan data!");
-                }
-            });
-        }
-
-        function deleteData(id) {
-            if (confirm("Apakah yakin data akan dihapus?")) {
-                $.ajax({
-                    url: "supplier/" + id,
-                    type: "POST",
-                    data: {
-                        '_method': 'DELETE',
-                        '_token': $('meta[name=csrf-token]').attr('content')
-                    },
-                    success: function(data) {
+        $('#modal-form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                    .done((response) => {
+                        $('#modal-form').modal('hide');
                         table.ajax.reload();
-                    },
-                    error: function() {
-                        alert("Tidak dapat menghapus data!");
-                    }
-                });
+                    })
+                    .fail((errors) => {
+                        alert('Tidak dapat menyimpan data');
+                        return;
+                    });
             }
+        });
+    });
+
+    function addForm(url) {
+        $('#modal-form').modal('show');
+        $('#modal-form .modal-title').text('Tambah Supplier');
+
+        $('#modal-form form')[0].reset();
+        $('#modal-form form').attr('action', url);
+        $('#modal-form [name=_method]').val('post');
+        $('#modal-form [name=nama]').focus();
+    }
+
+    function editForm(url) {
+        $('#modal-form').modal('show');
+        $('#modal-form .modal-title').text('Edit Supplier');
+
+        $('#modal-form form')[0].reset();
+        $('#modal-form form').attr('action', url);
+        $('#modal-form [name=_method]').val('put');
+        $('#modal-form [name=nama]').focus();
+
+        $.get(url)
+            .done((response) => {
+                $('#modal-form [name=nama]').val(response.nama);
+                $('#modal-form [name=telepon]').val(response.telepon);
+                $('#modal-form [name=alamat]').val(response.alamat);
+            })
+            .fail((errors) => {
+                alert('Tidak dapat menampilkan data');
+                return;
+            });
+    }
+
+    function deleteData(url) {
+        if (confirm('Yakin ingin menghapus data terpilih?')) {
+            $.post(url, {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'delete'
+                })
+                .done((response) => {
+                    table.ajax.reload();
+                })
+                .fail((errors) => {
+                    alert('Tidak dapat menghapus data');
+                    return;
+                });
         }
-    </script>
-@endsection
+    }
+</script>
+@endpush

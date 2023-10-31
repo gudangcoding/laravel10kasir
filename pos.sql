@@ -320,7 +320,7 @@ CREATE TABLE `setting` (
 --
 
 INSERT INTO `setting` (`id_setting`, `nama_perusahaan`, `alamat`, `telepon`, `tipe_nota`, `diskon`, `path_logo`, `path_kartu_member`, `created_at`, `updated_at`) VALUES
-(1, 'Toko Ku', 'Jl. Kibandang Samaran Ds. Slangit', '081234779987', 1, 5, '/img/logo.png', '/img/member.png', NULL, NULL);
+(1, 'Toko Amsis', 'Jakarta', '081283804283', 1, 5, '/img/logo.png', '/img/member.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -365,8 +365,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `foto`, `level`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `current_team_id`, `profile_photo_path`, `created_at`, `updated_at`) VALUES
-(1, 'Administrator', 'admin@gmail.com', NULL, '$2y$10$SFUAv1qC/M6idHH04kZUiegzHG3lJWhVNC6vTGu1h/dyysz0ONZLO', '/img/user.jpg', 1, NULL, NULL, NULL, NULL, NULL, '2023-03-01 03:46:41', '2023-03-01 03:46:41'),
-(2, 'Kasir 1', 'kasir1@gmail.com', NULL, '$2y$10$Z5KDeTuNfrJA7SAnaLYHROfIROyG7.GmJHJEcWhN/l7dbn93k6Viy', '/img/user.jpg', 2, NULL, NULL, NULL, NULL, NULL, '2023-03-01 03:46:41', '2023-03-01 03:46:41');
+(1, 'Administrator', 'a@a.com', NULL, '$2y$10$SFUAv1qC/M6idHH04kZUiegzHG3lJWhVNC6vTGu1h/dyysz0ONZLO', '/img/user.jpg', 1, NULL, NULL, NULL, NULL, NULL, '2023-03-01 03:46:41', '2023-03-01 03:46:41'),
+(2, 'Kasir 1', 'b@b.com', NULL, '$2y$10$Z5KDeTuNfrJA7SAnaLYHROfIROyG7.GmJHJEcWhN/l7dbn93k6Viy', '/img/user.jpg', 2, NULL, NULL, NULL, NULL, NULL, '2023-03-01 03:46:41', '2023-03-01 03:46:41');
 
 --
 -- Indexes for dumped tables

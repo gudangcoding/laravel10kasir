@@ -40,7 +40,8 @@ class ProdukController extends Controller
                 return '<span class="label label-success">'. $produk->kode_produk .'</span>';
             })
             ->addColumn('gambar', function ($gbr) {
-                return '<img width="50" src="'. $gbr->gambar.'">';
+                $gambar = isset($gbr->gambar) ? asset("images/produk/".$gbr->gambar) : asset("no-image.jpg");
+                return '<img width="50" src="'.$gambar.'">';
             })
             ->addColumn('harga_beli', function ($produk) {
                 return format_uang($produk->harga_beli);
@@ -89,7 +90,7 @@ class ProdukController extends Controller
             $nama_gambar = "produk.".$file->getClientOriginalExtension();
             $lokasi = public_path('images/produk');
             $file->move($lokasi, $nama_gambar);
-            $produk->kartu_member   = $nama_gambar;  
+            $produk->gambar   = $nama_gambar;  
          }
         $produk = Produk::create($request->all());
 

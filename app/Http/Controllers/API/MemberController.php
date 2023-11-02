@@ -26,7 +26,7 @@ class MemberController extends Controller
         $input['password'] = Hash::make($input['password']);
         $Members = Member::create($input);
         $success =  $Members;
-        $success['token'] =  $Members->createToken('MyApp', ['Members'])->plainTextToken;
+        $success['token'] =  $Members->createToken('MyApp', ['member'])->plainTextToken;
         //kirim email jika sudah sukses daftar atur di app\helpers\Kirimemail.php
         kirim_email($request->email, $request->name, "Pendaftaran StockMembers", "aktifkan pendaftaran anda disini<a href='https://stockMembers.com/Members/aktifasi/" . $Members->id . "'>Aktifasi Akun</a>", "");
         if ($success) {
@@ -63,12 +63,13 @@ class MemberController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }
+        // $password = bcrypt($request['password']);
+        $password = Hash::make($request->password);
+        if (Auth::guard('member')->attempt(['email' => $request->email, 'password' => $password])) {
 
-        if (Auth::guard('Members')->attempt(['email' => $request->email, 'password' => $request->password])) {
-
-            $Members = Member::select('id', 'name', 'email')->find(auth()->guard('Members')->user()->id);
+            $Members = Member::select('id', 'name', 'email')->find(auth()->guard('member')->user()->id);
             $success =  $Members;
-            $success['token'] =  $Members->createToken('MyApp', ['Members'])->plainTextToken;
+            $success['token'] =  $Members->createToken('MyApp', ['member'])->plainTextToken;
 
             return response()->json([
                 'success' => true,
@@ -88,7 +89,7 @@ class MemberController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::guard('Members')->logout();
+        Auth::guard('member')->logout();
         return response()->json([
             'message' => 'You have successfully logged out and the token was successfully deleted'
         ]);

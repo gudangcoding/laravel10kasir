@@ -96,7 +96,7 @@ class ProdukController extends Controller
         $produk->stok          = $request['stok'];
         //  //upload gambar
         if ($request->hasFile('gambar')) {
-            $imageName = "Produk - ".time().'.'.$request->gambar->extension();  
+            $imageName = "Produk - " . time() . '.' . $request->gambar->extension();
             $request->gambar->move(public_path('images/produk'), $imageName);
             $produk->gambar   = $imageName;
             $produk->save();

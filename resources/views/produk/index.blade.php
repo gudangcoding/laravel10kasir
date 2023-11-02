@@ -78,8 +78,9 @@
         });
 
         $('#modal-form').validator().on('submit', function (e) {
+            let formData = new FormData(this);
             if (! e.preventDefault()) {
-                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                $.post($('#modal-form form').attr('action'), formData)
                     .done((response) => {
                         $('#modal-form').modal('hide');
                         table.ajax.reload();

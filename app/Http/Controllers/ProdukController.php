@@ -33,15 +33,15 @@ class ProdukController extends Controller
             ->addIndexColumn()
             ->addColumn('select_all', function ($produk) {
                 return '
-                    <input type="checkbox" name="id_produk[]" value="'. $produk->id_produk .'">
+                    <input type="checkbox" name="id_produk[]" value="' . $produk->id_produk . '">
                 ';
             })
             ->addColumn('kode_produk', function ($produk) {
-                return '<span class="label label-success">'. $produk->kode_produk .'</span>';
+                return '<span class="label label-success">' . $produk->kode_produk . '</span>';
             })
             ->addColumn('gambar', function ($gbr) {
-                $gambar = isset($gbr->gambar) ? asset("images/produk/".$gbr->gambar) : asset("no-image.jpg");
-                return '<img width="50" src="'.$gambar.'">';
+                $gambar = isset($gbr->gambar) ? asset("images/produk/" . $gbr->gambar) : asset("no-image.jpg");
+                return '<img width="50" src="' . $gambar . '">';
             })
             ->addColumn('harga_beli', function ($produk) {
                 return format_uang($produk->harga_beli);
@@ -55,12 +55,12 @@ class ProdukController extends Controller
             ->addColumn('aksi', function ($produk) {
                 return '
                 <div class="btn-group">
-                    <button type="button" onclick="editForm(`'. route('produk.update', $produk->id_produk) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button type="button" onclick="deleteData(`'. route('produk.destroy', $produk->id_produk) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button type="button" onclick="editForm(`' . route('produk.update', $produk->id_produk) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button type="button" onclick="deleteData(`' . route('produk.destroy', $produk->id_produk) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
-            ->rawColumns(['aksi', 'kode_produk', 'select_all','gambar'])
+            ->rawColumns(['aksi', 'kode_produk', 'select_all', 'gambar'])
             ->make(true);
     }
 
@@ -83,18 +83,32 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         $produk = Produk::latest()->first() ?? new Produk();
-        $request['kode_produk'] = 'P'. tambah_nol_didepan((int)$produk->id_produk +1, 6);
-        //upload gambar
-        if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-            $nama_gambar = "produk.".$file->getClientOriginalExtension();
-            $lokasi = public_path('images/produk');
-            $file->move($lokasi, $nama_gambar);
-            $produk->gambar   = $nama_gambar;  
-         }
-        $produk = Produk::create($request->all());
+        $kode = $request['kode_produk'] = 'P' . tambah_nol_didepan((int)$produk->id_produk + 1, 6);
 
-        return response()->json('Data berhasil disimpan', 200);
+        $produk = new Produk;
+        $produk->kode_produk     = $kode;
+        $produk->nama_produk    = $request['nama_produk'];
+        $produk->id_kategori    = $request['id_kategori'];
+        $produk->merk          = $request['merk'];
+        $produk->harga_beli      = $request['harga_beli'];
+        $produk->diskon       = $request['diskon'];
+        $produk->harga_jual    = $request['harga_jual'];
+        $produk->stok          = $request['stok'];
+        //  //upload gambar
+        
+        // if ($request->hasFile('gambar')) {
+            $imageName = "Produk - ".time().'.'.$request->gambar->extension();  
+            $request->gambar->move(public_path('images/produk'), $imageName);
+            // $file = $request->file('gambar');
+            // $nama_gambar = "produk-".time().".".$file->getClientOriginalExtension();
+            // $lokasi = public_path('images/produk');
+            // $file->move($lokasi, $nama_gambar);
+            $produk->gambar   = $imageName;
+            $produk->save();
+        // }
+        $produk->save();
+        return redirect('produk');
+        // return response()->json('Data berhasil disimpan', 200);
     }
 
     /**

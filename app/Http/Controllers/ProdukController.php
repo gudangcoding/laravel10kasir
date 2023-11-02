@@ -95,17 +95,12 @@ class ProdukController extends Controller
         $produk->harga_jual    = $request['harga_jual'];
         $produk->stok          = $request['stok'];
         //  //upload gambar
-        
-        // if ($request->hasFile('gambar')) {
+        if ($request->hasFile('gambar')) {
             $imageName = "Produk - ".time().'.'.$request->gambar->extension();  
             $request->gambar->move(public_path('images/produk'), $imageName);
-            // $file = $request->file('gambar');
-            // $nama_gambar = "produk-".time().".".$file->getClientOriginalExtension();
-            // $lokasi = public_path('images/produk');
-            // $file->move($lokasi, $nama_gambar);
             $produk->gambar   = $imageName;
             $produk->save();
-        // }
+        }
         $produk->save();
         return redirect('produk');
         // return response()->json('Data berhasil disimpan', 200);

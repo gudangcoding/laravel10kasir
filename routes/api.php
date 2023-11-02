@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\MemberController;
 use App\Http\Controllers\API\ProdukController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('produk',[ProdukController::class,'index']);
+
+Route::group(['prefix' => '/member',], function () {
+    Route::post('/register', [MemberController::class, 'register']);
+    Route::post('/login', [MemberController::class, 'login']);
+});

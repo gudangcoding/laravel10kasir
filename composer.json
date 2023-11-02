@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.0",
         "milon/barcode": "^8.0",
+        "phpmailer/phpmailer": "^6.8",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
@@ -47,7 +48,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Http/Helpers/helpers.php"
+            "app/Http/Helpers/helpers.php",
+            "app/Helpers/KirimEmail.php"
         ]
     },
     "autoload-dev": {
@@ -68,5 +70,6 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "phpmailer/phpmailer": "^6.8.1"
 }

@@ -15,8 +15,8 @@ class BuatMemberTable extends Migration
     {
         Schema::create('member', function (Blueprint $table) {
             $table->increments('id_member');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('email')->unique()->nullable();
+            $table->string('password')->nullable();
             $table->string('kode_member')->unique();
             $table->string('nama');
             $table->text('alamat')->nullable();

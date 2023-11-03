@@ -13,18 +13,18 @@ class SupplierTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('suppliers')->insert(array(
+        DB::table('supplier')->insert(array(
             [
                 
                 'nama' => 'anas',
                 'alamat' => 'Jakarta',
-                'telpon' => bcrypt('1111'),
+                'telepon' => '123',
             ],
             [
 
                 'nama' => 'Joko',
                 'alamat' => 'Bekasi',
-                'telpon' => bcrypt('2222'),
+                'telepon' => '234',
             ]
         ));
     }

@@ -22,13 +22,15 @@
    </style>
 </head>
 <body>
+  <h1 style="color: black">tes</h1>
    <table width="100%">      
     
     @foreach($datamember as $data)
     <tr>
       <td align="center">
+      
       <div class="box">
-        <img src="{{ asset('public/images/card.png') }}" class="card">
+        <img src="{{ asset('images/card.png') }}" class="card">
         <div class="kode">{{ $data->kode_member }}</div>
         <div class="barcode">
           <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG( $data->kode_member, 'C39') }}" height="30" width="130">

@@ -13,19 +13,19 @@ class MemberTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('suppliers')->insert(array(
+        DB::table('member')->insert(array(
             [
 
                 'kode_member' => 'M001',
                 'nama' => 'Tes1',
                 'alamat' => 'Jakarta',
-                'telpon' => bcrypt('1111'),
+                'telepon' =>'111',
             ],
             [
                 'kode_member' => 'M002',
                 'nama' => 'Te2',
                 'alamat' => 'Bekasi',
-                'telpon' => bcrypt('2222'),
+                'telepon' => '222',
             ]
         ));
     }

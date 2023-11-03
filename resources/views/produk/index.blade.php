@@ -82,7 +82,7 @@
             'rowCallback': function(row, data, index){
                 
                 if(data.stok < data.stok_minimal){
-                    $(row).find('td:eq(8)').css('background', 'red');
+                    $(row).find('td:eq(10)').css('background', '#e01962');
                     
                 }
                

@@ -143,8 +143,9 @@ class MemberController extends Controller
         $setting    = Setting::first();
 
         $no  = 1;
-        $pdf = PDF::loadView('member.cetak', compact('datamember', 'no', 'setting'));
-        $pdf->setPaper(array(0, 0, 566.93, 850.39), 'potrait');
-        return $pdf->stream('member.pdf');
+        return view('member.cetak', compact('datamember', 'no', 'setting'));
+        // $pdf = PDF::loadView('member.cetak', compact('datamember', 'no', 'setting'));
+        // $pdf->setPaper(array(0, 0, 566.93, 850.39), 'potrait');
+        // return $pdf->stream('member.pdf');
     }
 }

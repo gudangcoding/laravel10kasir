@@ -95,6 +95,7 @@ class ProdukController extends Controller
         $produk->diskon       = $request['diskon'];
         $produk->harga_jual    = $request['harga_jual'];
         $produk->stok          = $request['stok'];
+        $produk->stok_minimal          = $request['stok_minimal'];
         //  //upload gambar
         if ($request->hasFile('gambar')) {
             $imageName = "Produk - " . time() . '.' . $request->gambar->extension();

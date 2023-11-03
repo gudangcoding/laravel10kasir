@@ -66,6 +66,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="stok" class="col-lg-2 col-lg-offset-1 control-label">Stok Minimal</label>
+                        <div class="col-lg-6">
+                            <input type="number" name="stok_minimal" id="stok_minimal" class="form-control" required value="0">
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="stok" class="col-lg-2 col-lg-offset-1 control-label">Gambar</label>
                         <div class="col-lg-6">
                             <input type="file" name="gambar" id="gambar" class="form-control">

@@ -90,6 +90,7 @@
         });
 
         $('#modal-form').validator().on('submit', function (e) {
+            //untuk input data dengan gambar
             let formData = new FormData(this);
             if (! e.preventDefault()) {
                 $.post($('#modal-form form').attr('action'), formData)

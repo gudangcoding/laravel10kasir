@@ -93,13 +93,13 @@ class PenjualanDetailController extends Controller
         $detail->diskon = 0;
         $detail->subtotal = $produk->harga_jual;
         $detail->save();
-
+        $detail->id;
         //kurangi stok
-        $stok = Produk::find($produk->id_produk);
-        $stok->stok = $stok->stok - 1;
-        $stok->update();
+        // $stok = Produk::find($produk->id_produk);
+        // $stok->stok = $stok->stok - 1;
+        // $stok->update();
 
-        return response()->json('Data berhasil disimpan', 200);
+        //return response()->json('Data berhasil disimpan', 200);
     }
 
     public function update(Request $request, $id)

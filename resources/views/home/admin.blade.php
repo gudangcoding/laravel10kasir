@@ -66,7 +66,7 @@
             	<div class="chart">
 
                     <!-- <canvas id="salesChart" style="height: 250px;"></canvas> -->
-
+                    {{$data_pendapatan}}
                     <canvas id="myChart"></canvas>
                 </div>
             </div>
@@ -77,9 +77,10 @@
 @endsection
 
 @section('script')
+{{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
 $(function () {
-  var salesChartCanvas = $("#salesChart").get(0).getContext("2d");
+  var salesChartCanvas = $("#myChart").get(0).getContext("2d");
   var salesChart = new Chart(salesChartCanvas);
 
   var salesChartData = {
@@ -106,7 +107,7 @@ $(function () {
   //Create the line chart
   salesChart.Line(salesChartData, salesChartOptions);
 });
-</script>
+</script> --}}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

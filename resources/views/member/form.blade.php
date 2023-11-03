@@ -26,6 +26,20 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="email" class="col-lg-2 col-lg-offset-1 control-label">Email</label>
+                        <div class="col-lg-6">
+                            <input type="text" name="email" id="email" class="form-control" required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-lg-2 col-lg-offset-1 control-label">Password</label>
+                        <div class="col-lg-6">
+                            <input type="password" name="password" id="password" class="form-control" required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="alamat" class="col-lg-2 col-lg-offset-1 control-label">Alamat</label>
                         <div class="col-lg-6">
                             <textarea name="alamat" id="alamat" rows="3" class="form-control"></textarea>

@@ -72,6 +72,8 @@ class MemberController extends Controller
         $member->nama = $request->nama;
         $member->telepon = $request->telepon;
         $member->alamat = $request->alamat;
+        $member->email = $request->email;
+        $member->password = $request->password;
         $member->save();
 
         return response()->json('Data berhasil disimpan', 200);

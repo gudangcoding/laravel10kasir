@@ -38,6 +38,7 @@
                             <th>Harga Jual</th>
                             <th>Diskon</th>
                             <th>Stok</th>
+                            <th>Min</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
                     </table>
@@ -61,6 +62,7 @@
             ajax: {
                 url: '{{ route('produk.data') }}',
             },
+            
             columns: [
                 {data: 'select_all', searchable: false, sortable: false},
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
@@ -73,8 +75,18 @@
                 {data: 'harga_jual'},
                 {data: 'diskon'},
                 {data: 'stok'},
+                {data: 'stok_minimal'},
                 {data: 'aksi', searchable: false, sortable: false},
-            ]
+            ],
+            // cek stoknya 
+            'rowCallback': function(row, data, index){
+                
+                if(data.stok < data.stok_minimal){
+                    $(row).find('td:eq(8)').css('background', 'red');
+                    
+                }
+               
+            },
         });
 
         $('#modal-form').validator().on('submit', function (e) {

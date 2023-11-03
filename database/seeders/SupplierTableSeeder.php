@@ -15,7 +15,7 @@ class SupplierTableSeeder extends Seeder
     {
         DB::table('suppliers')->insert(array(
             [
-
+                
                 'nama' => 'anas',
                 'alamat' => 'Jakarta',
                 'telpon' => bcrypt('1111'),

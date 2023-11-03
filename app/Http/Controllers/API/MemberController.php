@@ -65,7 +65,7 @@ class MemberController extends Controller
         }
         // $password = bcrypt($request['password']);
         $password = Hash::make($request->password);
-        if (Auth::guard('member')->attempt(['email' => $request->email, 'password' => $password])) {
+        if (Auth::guard('member')->attempt(['email' => $request->email, 'password' => $request->password])) {
 
             $Members = Member::select('id', 'name', 'email')->find(auth()->guard('member')->user()->id);
             $success =  $Members;

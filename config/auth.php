@@ -40,6 +40,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
         'member' => [
             'driver' => 'token',
             'provider' => 'member',
@@ -74,6 +75,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        
         'member' => [
             'driver' => 'eloquent',
             'model' => App\Models\Member::class,

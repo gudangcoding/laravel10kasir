@@ -15,7 +15,7 @@ class BuatProdukTable extends Migration
     {
         Schema::create('produk', function (Blueprint $table) {
             $table->increments('id_produk');
-            $table->integer('id_kategori');
+            $table->string('kode_produk',15);
             $table->string('nama_produk')->unique();
             $table->string('gambar')->nullable();
             $table->string('merk')->nullable();
@@ -23,6 +23,9 @@ class BuatProdukTable extends Migration
             $table->tinyInteger('diskon')->default(0);
             $table->integer('harga_jual');
             $table->integer('stok');
+            $table->integer('stok_minimal');
+            $table->unsignedBigInteger('id_kategori');
+            //$table->foreign('id_kategori')->references('id_kategori')->on('kategori')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -34,6 +37,7 @@ class BuatProdukTable extends Migration
      */
     public function down()
     {
+
         Schema::dropIfExists('produk');
     }
 }

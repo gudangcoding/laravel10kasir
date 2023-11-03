@@ -16,4 +16,13 @@ class Member extends Model
     protected $table = 'member';
     protected $primaryKey = 'id_member';
     protected $guarded = [];
+
+    protected $hidden = [
+        'password',
+        'c_password',
+    ];
+
+    // protected $casts = [
+    //     'password' => 'hashed',
+    // ];
 }

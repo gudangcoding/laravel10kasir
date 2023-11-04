@@ -7,7 +7,9 @@ use App\Models\PenjualanDetail;
 use App\Models\Produk;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use PDF;
+use App\Models\Member;
+// use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PenjualanController extends Controller
 {
@@ -48,7 +50,7 @@ class PenjualanController extends Controller
             ->addColumn('aksi', function ($penjualan) {
                 return '
                 <div class="btn-group">
-                    <button onclick="editDetail(`'. route('penjualan.edit', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-success btn-flat"><i class="fa fa-edit"></i></button>
+                    <a href="'.route("penjualan.edit", $penjualan->id_penjualan).'" class="btn btn-xs btn-success btn-flat"><i class="fa fa-edit"></i></a>
                     <button onclick="showDetail(`'. route('penjualan.show', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
                     <button onclick="deleteData(`'. route('penjualan.destroy', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
@@ -125,9 +127,14 @@ class PenjualanController extends Controller
     }
     public function edit($id)
     {
+        $id_penjualan = $id;
+        $produk = Produk::orderBy('nama_produk')->get();
+        $member = Member::orderBy('nama')->get();
+        $diskon = Setting::first()->diskon ?? 0;
         $detail = PenjualanDetail::with('produk')->where('id_penjualan', $id)->get();
-
-        return view('penjualan.detail', compact('detail'));
+        $penjualan = Penjualan::find($id_penjualan);
+        $memberSelected = $penjualan->member ?? new Member();
+        return view('penjualan.form', compact('penjualan','member','produk','detail','id_penjualan','memberSelected','diskon'));
     }
 
     public function destroy($id)

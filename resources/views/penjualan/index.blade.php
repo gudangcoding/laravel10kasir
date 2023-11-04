@@ -34,6 +34,7 @@
 </div>
 
 @includeIf('penjualan.detail')
+
 @endsection
 
 @push('scripts')

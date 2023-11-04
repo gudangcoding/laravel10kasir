@@ -142,9 +142,24 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
     {
         $produk = Produk::find($id);
-        $produk->update($request->all());
+        $produk->nama_produk    = $request['nama_produk'];
+        $produk->id_kategori    = $request['id_kategori'];
+        $produk->merk          = $request['merk'];
+        $produk->harga_beli      = $request['harga_beli'];
+        $produk->diskon       = $request['diskon'];
+        $produk->harga_jual    = $request['harga_jual'];
+        $produk->stok          = $request['stok'];
+        $produk->stok_minimal          = $request['stok_minimal'];
+        //  //upload gambar
+        if ($request->hasFile('gambar')) {
+            $imageName = "Produk - " . time() . '.' . $request->gambar->extension();
+            $request->gambar->move(public_path('images/produk'), $imageName);
+            $produk->gambar   = $imageName;
+            $produk->save();
+        }
+        $produk->update();
 
-        return response()->json('Data berhasil disimpan', 200);
+        return redirect('produk');
     }
 
     /**

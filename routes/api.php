@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\api\MemberController;
+use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProdukController;
 use Illuminate\Http\Request;
@@ -21,10 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('produk',[ProdukController::class,'index']);
-Route::post('/register', [OrderController::class, 'order']);
+Route::get('/produk',[ProdukController::class,'index']);
+Route::post('/order', [OrderController::class, 'order']);
+Route::post('/register', [MemberController::class, 'register']);
+Route::post('/login', [MemberController::class, 'login']);
 
 Route::group(['prefix' => '/member',], function () {
-    Route::post('/register', [MemberController::class, 'register']);
-    Route::post('/login', [MemberController::class, 'login']);
+    
 });

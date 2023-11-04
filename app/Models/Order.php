@@ -10,21 +10,14 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id', 
-        'seller_id', 
-        'number', 
-        'total_price',
-        'payment_status', 
-        'payment_url', 
-        'delivery_address',
-        'shipping_cost', 
-        'courier_name',
-    ];
+
+    protected $table = 'penjualan';
+    protected $primaryKey = 'id_penjualan';
+    protected $guarded = [];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Member::class);
     }
 
     public function orderItems(): HasMany

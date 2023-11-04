@@ -29,32 +29,66 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     $setting = Setting::find(1);
+
+    //   $awal = date('Y-m-d', mktime(0,0,0, date('m'), 1, date('Y')));
+    //   $akhir = date('Y-m-d');
+
+    //   $tanggal = $awal;
+    //   $data_tanggal = array();
+    //   $data_pendapatan = array();
+
+    //   while(strtotime($tanggal) <= strtotime($akhir)){ 
+    //     $data_tanggal[] = (int)substr($tanggal,8,2);
+        
+    //     $pendapatan = Penjualan::where('created_at', 'LIKE', "$tanggal%")->sum('bayar');
+    //     $data_pendapatan[] = (int) $pendapatan;
+
+    //     $tanggal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal)));
+    //   }
+        
+    //     $kategori = Kategori::count();
+    //     $produk = Produk::count();
+    //     $supplier = Supplier::count();
+    //     $member = Member::count();
+
+    //     if(Auth::user()->level == 1) return view('home.admin', compact('kategori', 'produk', 'supplier', 'member', 'awal', 'akhir', 'data_pendapatan', 'data_tanggal'));
+    //     else return view('home.kasir', compact('setting'));
+    // }
+
     public function index()
-    {
-        $setting = Setting::find(1);
+{
+    $setting = Setting::find(1);
 
-      $awal = date('Y-m-d', mktime(0,0,0, date('m'), 1, date('Y')));
-      $akhir = date('Y-m-d');
+    $now = now(); // Waktu saat ini
+    $awalBulanIni = $now->startOfMonth(); // Awal bulan ini
+    $akhirBulanIni = $now->endOfMonth(); // Akhir bulan ini
 
-      $tanggal = $awal;
-      $data_tanggal = array();
-      $data_pendapatan = array();
+    $tanggal = $awalBulanIni;
+    $data_tanggal = array();
+    $data_pendapatan = array();
 
-      while(strtotime($tanggal) <= strtotime($akhir)){ 
-        $data_tanggal[] = (int)substr($tanggal,8,2);
-        
-        $pendapatan = Penjualan::where('created_at', 'LIKE', "$tanggal%")->sum('bayar');
-        $data_pendapatan[] = (int) $pendapatan;
+    while ($tanggal <= $akhirBulanIni) {
+        $data_tanggal[] = (int)$tanggal->format('d');
 
-        $tanggal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal)));
-      }
-        
-        $kategori = Kategori::count();
-        $produk = Produk::count();
-        $supplier = Supplier::count();
-        $member = Member::count();
+        $pendapatan = Penjualan::whereBetween('created_at', [$tanggal->startOfDay(), $tanggal->endOfDay()])->sum('bayar');
+        $data_pendapatan[] = (int)$pendapatan;
 
-        if(Auth::user()->level == 1) return view('home.admin', compact('kategori', 'produk', 'supplier', 'member', 'awal', 'akhir', 'data_pendapatan', 'data_tanggal'));
-        else return view('home.kasir', compact('setting'));
+        $tanggal->addDay();
     }
+
+    $kategori = Kategori::count();
+    $produk = Produk::count();
+    $supplier = Supplier::count();
+    $member = Member::count();
+
+    if (Auth::user()->level == 1) {
+        return view('home.admin', compact('kategori', 'produk', 'supplier', 'member', 'awalBulanIni', 'akhirBulanIni', 'data_pendapatan', 'data_tanggal'));
+    } else {
+        return view('home.kasir', compact('setting'));
+    }
+}
+
 }

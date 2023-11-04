@@ -60,7 +60,8 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-            	<h3 class="box-title">Grafik Pendapatan {{ tanggal_indonesia($awal) }} s/d {{ tanggal_indonesia($akhir) }}</h3>
+            	{{-- <h3 class="box-title">Grafik Pendapatan {{ tanggal_indonesia($awal) }} s/d {{ tanggal_indonesia($akhir) }}</h3> --}}
+              <h3 class="box-title">Grafik Pendapatan {{ tanggal_indonesia($awalBulanIni) }} s/d {{ tanggal_indonesia($akhirBulanIni) }}</h3>
             </div>
             <div class="box-body">
             	<div class="chart">

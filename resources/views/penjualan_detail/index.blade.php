@@ -108,7 +108,7 @@
                                 <div class="col-lg-8">
                                     <input type="number" name="diskon" id="diskon" class="form-control" 
                                         value="{{ ! empty($memberSelected->id_member) ? $diskon : 0 }}" 
-                                        readonly>
+                                        >
                                 </div>
                             </div>
                             <div class="form-group row">

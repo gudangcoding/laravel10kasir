@@ -107,6 +107,8 @@
                 $('#modal-form [name=nama]').val(response.nama);
                 $('#modal-form [name=telepon]').val(response.telepon);
                 $('#modal-form [name=alamat]').val(response.alamat);
+                $('#modal-form [name=email]').val(response.email);
+                $('#modal-form [name=password]').val(response.password);
             })
             .fail((errors) => {
                 alert('Tidak dapat menampilkan data');

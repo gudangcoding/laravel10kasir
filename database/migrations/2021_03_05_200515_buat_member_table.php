@@ -17,10 +17,11 @@ class BuatMemberTable extends Migration
             $table->increments('id_member');
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
-            $table->string('kode_member')->unique();
+            $table->string('c_password')->nullable();
+            $table->string('kode_member')->unique()->nullable();
             $table->string('nama');
             $table->text('alamat')->nullable();
-            $table->string('telepon');
+            $table->string('telepon')->nullable();
             $table->timestamps();
         });
     }

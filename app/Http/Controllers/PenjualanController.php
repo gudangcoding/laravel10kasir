@@ -48,6 +48,7 @@ class PenjualanController extends Controller
             ->addColumn('aksi', function ($penjualan) {
                 return '
                 <div class="btn-group">
+                    <button onclick="editDetail(`'. route('penjualan.edit', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-success btn-flat"><i class="fa fa-edit"></i></button>
                     <button onclick="showDetail(`'. route('penjualan.show', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
                     <button onclick="deleteData(`'. route('penjualan.destroy', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
@@ -121,6 +122,12 @@ class PenjualanController extends Controller
             })
             ->rawColumns(['kode_produk'])
             ->make(true);
+    }
+    public function edit($id)
+    {
+        $detail = PenjualanDetail::with('produk')->where('id_penjualan', $id)->get();
+
+        return view('penjualan.detail', compact('detail'));
     }
 
     public function destroy($id)

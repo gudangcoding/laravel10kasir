@@ -73,7 +73,7 @@ class MemberController extends Controller
         $member->telepon = $request->telepon;
         $member->alamat = $request->alamat;
         $member->email = $request->email;
-        $member->password = $request->password;
+        $member->password = bcrypt( $request->password);
         $member->save();
 
         return response()->json('Data berhasil disimpan', 200);
@@ -112,7 +112,14 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $member = Member::find($id)->update($request->all());
+        // $member = Member::find($id)->update($request->all());
+        $member = Member::find($id);
+        $member->nama = $request->nama;
+        $member->telepon = $request->telepon;
+        $member->alamat = $request->alamat;
+        $member->email = $request->email;
+        $member->password = bcrypt( $request->password);
+        $member->update();
 
         return response()->json('Data berhasil disimpan', 200);
     }

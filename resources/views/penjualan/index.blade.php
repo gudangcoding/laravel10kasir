@@ -23,6 +23,7 @@
                         <th>Total Harga</th>
                         <th>Diskon</th>
                         <th>Total Bayar</th>
+                        <th>Status</th>
                         <th>Kasir</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
@@ -54,6 +55,7 @@
                 {data: 'total_harga'},
                 {data: 'diskon'},
                 {data: 'bayar'},
+                {data: 'status'},
                 {data: 'kasir'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
@@ -95,6 +97,32 @@
                     return;
                 });
         }
+    }
+
+    function editForm(url,id) {
+        $('#modal-form').modal('show');
+        $('#modal-form .modal-title').text('Edit Produk');
+
+        $('#modal-form form')[0].reset();
+        $('#modal-form form').attr('action', url);
+        $('#modal-form [name=_method]').val('put');
+        $('#modal-form [name=nama_produk]').focus();
+
+        $.get(url)
+            .done((response) => {
+                $('#modal-form [name=nama_produk]').val(response.nama_produk);
+                $('#modal-form [name=id_kategori]').val(response.id_kategori);
+                $('#modal-form [name=merk]').val(response.merk);
+                $('#modal-form [name=harga_beli]').val(response.harga_beli);
+                $('#modal-form [name=harga_jual]').val(response.harga_jual);
+                $('#modal-form [name=diskon]').val(response.diskon);
+                $('#modal-form [name=stok]').val(response.stok);
+                $('#modal-form [name=stok_minimal]').val(response.stok_minimal);
+            })
+            .fail((errors) => {
+                alert('Tidak dapat menampilkan data');
+                return;
+            });
     }
 </script>
 @endpush

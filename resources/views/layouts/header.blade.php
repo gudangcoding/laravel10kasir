@@ -22,6 +22,45 @@
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+                <li class="dropdown notifications-menu open">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                      <i class="fa fa-bell-o"></i>
+                      @php
+                      $jum=DB::select('select count(id_produk) as jum from produk where stok<=stok_minimal');
+                      
+                   @endphp
+                    @foreach($jum as $j)
+                      <span class="label label-danger">{{$j->jum}}</span>
+                      
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li class="header">Ada {{$j->jum}} Notifikasi</li>
+                      @endforeach 
+                      <li>
+                        <!-- inner menu: contains the actual data -->
+                        <ul class="menu">
+                            @php
+                                $notif=DB::table('produk')->select('nama_produk','stok','stok_minimal')->get();
+                                
+                             @endphp
+                             @foreach($notif as $n)
+                            @php
+                                 if ($n->stok <= $n->stok_minimal) {
+                                //$pesan = $n->nama_produk." Perlu tambah stok";
+                             }
+                            @endphp
+                          <li>
+                            <a href="/produk">
+                              <i class="fa fa-users text-aqua"></i> {{$n->nama_produk}} Perlu tambah stok ({{$n->stok}})
+                            </a>
+                          </li>
+                          @endforeach
+                       
+                        </ul>
+                      </li>
+                      <li class="footer"><a href="#">View all</a></li>
+                    </ul>
+                  </li>
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

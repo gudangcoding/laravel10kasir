@@ -128,21 +128,33 @@ class PenjualanController extends Controller
     public function edit($id)
     {
 
-        $penjualan = Penjualan::select('penjualan.*', 'member.id_member', 'users.id')
+        $jual = Penjualan::select(
+            'penjualan.*', 
+            'member.id_member', 
+            'member.nama', 
+            'users.id',
+            'users.name',
+            )
             ->join('member', 'penjualan.id_member', '=', 'member.id_member')
             ->join('users', 'penjualan.id_user', '=', 'users.id')
             ->where('penjualan.id_penjualan', $id)
-            ->get();
+            ->first();
 
-        $penjualanDetails = PenjualanDetail::select('penjualan_detail.*', 'produk.id_produk')
+        $detail = PenjualanDetail::select(
+            'penjualan_detail.*', 
+            'produk.id_produk',
+            'produk.nama_produk', 
+            'penjualan_detail.harga_jual', 
+            'penjualan_detail.subtotal', 
+            'penjualan_detail.jumlah')
             ->join('produk', 'penjualan_detail.id_produk', '=', 'produk.id_produk')
             ->join('penjualan', 'penjualan_detail.id_penjualan', '=', 'penjualan.id_penjualan')
             ->where('penjualan.id_penjualan', $id)
             ->get();
 
-        $jual = Penjualan::where('id_penjualan', $id)->first();
-        $member = Member::where('id_member', $jual->id_member)->first();
-        return view('penjualan.form', compact('penjualan', 'penjualanDetails','jual','member'));
+        
+        // echo response()->json($detail);
+        return view('penjualan.form', compact('jual', 'detail'));
     }
 
     function ubah(Request $request,$id)  {

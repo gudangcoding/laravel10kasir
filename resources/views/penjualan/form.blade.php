@@ -43,7 +43,7 @@
             <div class="box-body">
                     
                
-
+                <h2>Detail Barang</h2>
                 <table class="table table-stiped table-bordered table-penjualan">
                     <thead>
                         <th width="5%">No</th>
@@ -56,9 +56,9 @@
                     </thead>
                     <tbody>
                        <tr>
-                        @foreach($penjualanDetails as $p)
+                        @foreach($detail as $p)
 
-                        <td width="5%">{{$p->id_penjualan}}</td>
+                        <td width="5%">{{$p->id_penjualan_detail}}</td>
                         <td>{{$p->id_penjualan}}</td>
                         <td>{{$p->nama_produk}}</td>
                         <td>{{$p->harga_jual}}</td>
@@ -80,25 +80,23 @@
                         <form action="{{ route('transaksi.ubah') }}" class="form-penjualan" method="post">
                             @csrf
                             <input type="hidden" name="id_penjualan" value="{{$jual->id_penjualan}}">
-                            <input type="hidden" name="total" id="total">
-                            <input type="hidden" name="total_item" id="total_item">
-                            <input type="hidden" name="bayar" id="bayar">
-                            <input type="hidden" name="id_member" id="id_member" value="">
+                            <input type="hidden" name="total" id="total" value="{{$jual->total_harga}}">
+                            <input type="hidden" name="total_item" id="total_item" value="{{$jual->total_item}}">
+                            <input type="hidden" name="bayar" id="bayar" value="{{$jual->bayar}}">
+                            <input type="hidden" name="id_member" id="id_member" value="{{$jual->id_member}}">
 
                             <div class="form-group row">
                                 <label for="totalrp" class="col-lg-2 control-label">Total</label>
                                 <div class="col-lg-8">
-                                    <input type="text" id="totalrp" class="form-control" readonly>
+                                    <input type="text" id="totalrp" class="form-control" value="{{$jual->total_harga}}" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="kode_member" class="col-lg-2 control-label">Member</label>
                                 <div class="col-lg-8">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="kode_member" value="">
-                                        <span class="input-group-btn">
-                                            <button onclick="tampilMember()" class="btn btn-info btn-flat" type="button"><i class="fa fa-arrow-right"></i></button>
-                                        </span>
+                                        <input type="text" class="form-control" id="kode_member" value="{{$jual->id_member}}" readonly>
+                                
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +104,7 @@
                                 <label for="diskon" class="col-lg-2 control-label">Diskon</label>
                                 <div class="col-lg-8">
                                     <input type="number" name="diskon" id="diskon" class="form-control" 
-                                        value="" 
+                                    value="{{$jual->diskon}}"
                                         >
                                 </div>
                             </div>
@@ -125,7 +123,7 @@
                             <div class="form-group row">
                                 <label for="bayar" class="col-lg-2 control-label">Bayar</label>
                                 <div class="col-lg-8">
-                                    <input type="text" id="bayarrp" class="form-control" readonly>
+                                    <input type="text" id="bayarrp" class="form-control" value="{{$jual->bayar}}" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -137,7 +135,7 @@
                             <div class="form-group row">
                                 <label for="kembali" class="col-lg-2 control-label">Kembali</label>
                                 <div class="col-lg-8">
-                                    <input type="text" id="kembali" name="kembali" class="form-control" value="0" readonly>
+                                    <input type="text" id="kembali" name="kembali" class="form-control" value="{{$jual->diterima-$jual->bayar}}" readonly>
                                 </div>
                             </div>
                         </form>

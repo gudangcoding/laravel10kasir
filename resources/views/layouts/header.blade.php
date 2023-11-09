@@ -22,7 +22,7 @@
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                <li class="dropdown notifications-menu open">
+                <li class="dropdown notifications-menu">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                       <i class="fa fa-bell-o"></i>
                       @php
@@ -40,12 +40,13 @@
                         <!-- inner menu: contains the actual data -->
                         <ul class="menu">
                             @php
-                                $notif=DB::table('produk')->select('nama_produk','stok','stok_minimal')->get();
+                                $notif=DB::select('select stok,stok_minimal,nama_produk from produk where stok<=stok_minimal');
                                 
                              @endphp
+                             
                              @foreach($notif as $n)
                             @php
-                                 if ($n->stok <= $n->stok_minimal) {
+                                 if ($n->stok < $n->stok_minimal) {
                                 //$pesan = $n->nama_produk." Perlu tambah stok";
                              }
                             @endphp

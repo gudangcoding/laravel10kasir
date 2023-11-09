@@ -66,8 +66,6 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
         Route::resource('/penjualan', PenjualanController::class);
-       
-        Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
     });
 
     Route::group(['middleware' => 'level:1,2'], function () {

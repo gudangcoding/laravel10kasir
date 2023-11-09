@@ -21,7 +21,7 @@ class BuatPenjualanTable extends Migration
             $table->tinyInteger('diskon')->default(0);
             $table->integer('bayar')->default(0);
             $table->integer('diterima')->default(0);
-            $table->enum('status',['Pending','Dibayar','Dikirim','Selesai'])->default('pending');
+            $table->enum('status',['Pending','Dibayar','Dikirim','Diterima','Selesai'])->default('pending');
             $table->integer('id_user');
             $table->timestamps();
         });

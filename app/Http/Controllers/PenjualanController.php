@@ -157,10 +157,15 @@ class PenjualanController extends Controller
         return view('penjualan.form', compact('jual', 'detail'));
     }
 
-    function ubah(Request $request,$id)  {
-        $penjualan = Penjualan::find($id);
-        $penjualan->status = $request->status;
-        $penjualan->update();
+   
+    public function update(Request $request, $id)
+    {
+        $detail =  Penjualan::findOrFail($id);
+        $detail->status = $request->status;
+        $detail->update();
+        // return response()->json($detail);
+
+        return redirect('penjualan');
     }
 
     public function destroy($id)

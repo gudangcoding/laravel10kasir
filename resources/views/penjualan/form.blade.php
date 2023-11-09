@@ -17,9 +17,9 @@
         background: #f0f0f0;
     }
 
-    .table-penjualan tbody tr:last-child {
+    /* .table-penjualan tbody tr:last-child {
         display: none;
-    }
+    } */
 
     @media(max-width: 768px) {
         .tampil-bayar {
@@ -33,7 +33,7 @@
 
 @section('breadcrumb')
     @parent
-    <li class="active">Transaksi Penjaualn</li>
+    <li class="active">Transaksi Penjualan</li>
 @endsection
 
 @section('content')
@@ -44,6 +44,7 @@
                     
                
                 <h2>Detail Barang</h2>
+               
                 <table class="table table-stiped table-bordered table-penjualan">
                     <thead>
                         <th width="5%">No</th>
@@ -77,8 +78,10 @@
                         <div class="tampil-terbilang"></div>
                     </div>
                     <div class="col-lg-4">
-                        <form action="{{ route('transaksi.ubah') }}" class="form-penjualan" method="post">
+                        <form action="{{ route('penjualan.update',$jual->id_penjualan) }}" class="form-penjualan" method="POST">
                             @csrf
+                            @method('PUT')
+                       
                             <input type="hidden" name="id_penjualan" value="{{$jual->id_penjualan}}">
                             <input type="hidden" name="total" id="total" value="{{$jual->total_harga}}">
                             <input type="hidden" name="total_item" id="total_item" value="{{$jual->total_item}}">
@@ -104,7 +107,7 @@
                                 <label for="diskon" class="col-lg-2 control-label">Diskon</label>
                                 <div class="col-lg-8">
                                     <input type="number" name="diskon" id="diskon" class="form-control" 
-                                    value="{{$jual->diskon}}"
+                                    value="{{$jual->diskon}}" readonly
                                         >
                                 </div>
                             </div>
@@ -129,7 +132,7 @@
                             <div class="form-group row">
                                 <label for="diterima" class="col-lg-2 control-label">Diterima</label>
                                 <div class="col-lg-8">
-                                    <input type="number" id="diterima" class="form-control" name="diterima" value="{{ $jual->diterima ?? 0 }}">
+                                    <input type="number" id="diterima" class="form-control" name="diterima" value="{{ $jual->diterima ?? 0 }}" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -138,7 +141,7 @@
                                     <input type="text" id="kembali" name="kembali" class="form-control" value="{{$jual->diterima-$jual->bayar}}" readonly>
                                 </div>
                             </div>
-                        </form>
+                       
                     </div>
                 </div>
             </div>
@@ -147,6 +150,7 @@
                 <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan"><i class="fa fa-floppy-o"></i> Simpan Transaksi</button>
             </div>
         </div>
+    </form>
     </div>
 </div>
 

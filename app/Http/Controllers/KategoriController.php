@@ -24,6 +24,10 @@ class KategoriController extends Controller
         return datatables()
             ->of($kategori)
             ->addIndexColumn()
+            ->addColumn('gambar', function ($gbr) {
+                $gambar = isset($gbr->gambar) ? asset("images/kategori/" . $gbr->gambar) : asset("no-image.jpg");
+                return '<img width="50" src="' . $gambar . '">';
+            })
             ->addColumn('aksi', function ($kategori) {
                 return '
                 <div class="btn-group">
@@ -32,7 +36,7 @@ class KategoriController extends Controller
                 </div>
                 ';
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'gambar'])
             ->make(true);
     }
 
@@ -56,9 +60,15 @@ class KategoriController extends Controller
     {
         $kategori = new Kategori();
         $kategori->nama_kategori = $request->nama_kategori;
+        if ($request->hasFile('gambar')) {
+            $imageName = "Kategori - " . time() . '.' . $request->gambar->extension();
+            $request->gambar->move(public_path('images/kategori'), $imageName);
+            $kategori->gambar   = $imageName;
+            $kategori->save();
+        }
         $kategori->save();
-
-        return response()->json('Data berhasil disimpan', 200);
+        return redirect('kategori');
+        //return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
@@ -96,9 +106,15 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::find($id);
         $kategori->nama_kategori = $request->nama_kategori;
+        if ($request->hasFile('gambar')) {
+            $imageName = "Kategori - " . time() . '.' . $request->gambar->extension();
+            $request->gambar->move(public_path('images/kategori'), $imageName);
+            $kategori->gambar   = $imageName;
+            $kategori->save();
+        }
         $kategori->update();
-
-        return response()->json('Data berhasil disimpan', 200);
+        return redirect('kategori');
+        //return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
@@ -111,7 +127,7 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::find($id);
         $kategori->delete();
-
-        return response(null, 204);
+        return redirect('kategori');
+        //return response(null, 204);
     }
 }

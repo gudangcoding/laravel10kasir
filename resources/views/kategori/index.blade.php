@@ -21,6 +21,7 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Kategori</th>
+                        <th>Gambar</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
                 </table>
@@ -46,13 +47,15 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'nama_kategori'},
+                {data: 'gambar'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
         });
 
         $('#modal-form').validator().on('submit', function (e) {
+            let formData = new FormData(this);
             if (! e.preventDefault()) {
-                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                $.post($('#modal-form form').attr('action'), formData)
                     .done((response) => {
                         $('#modal-form').modal('hide');
                         table.ajax.reload();

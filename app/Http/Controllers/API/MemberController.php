@@ -29,12 +29,12 @@ class MemberController extends Controller
             return response()->json(['error' => $validator->errors()->all()]);
         }
         $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
+        $password= Hash::make($input['password']);
         $Members = Member::create([
             'kode_member'=> $kode,
             'nama'=> $request->nama,
             'email'=> $request->email,
-            'password'=> $request->password,
+            'password'=> $password,
         ]);
         $success =  $Members;
         $success['token'] =  $Members->createToken('MyApp', ['member'])->plainTextToken;
@@ -76,12 +76,9 @@ class MemberController extends Controller
         }
         // $password = bcrypt($request['password']);
         $password = Hash::make($request->password);
-        if (Auth::guard('member')->attempt(
-            ['email' => $request->email, 
-            'password' => $password
-            ])) {
+        if (Auth::guard('member')->attempt( ['email' => $request->email, 'password' => $request->password ])) {
 
-            $Members = Member::select('id', 'name', 'email')->find(auth()->guard('member')->user()->id);
+            $Members = Member::select('id_member', 'nama','kode_member', 'email')->find(auth()->guard('member')->user()->id_member);
             $success =  $Members;
             $success['token'] =  $Members->createToken('MyApp', ['member'])->plainTextToken;
 

@@ -42,7 +42,7 @@ return [
         ],
 
         'member' => [
-            'driver' => 'token',
+            'driver' => 'session',
             'provider' => 'member',
         ],
 

@@ -17,14 +17,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::get('/produk',[ProdukController::class,'index']);
 Route::post('/order', [OrderController::class, 'order']);
-Route::post('/register', [MemberController::class, 'register']);
-Route::post('/login', [MemberController::class, 'login']);
+
+Route::post('/member/register', [MemberController::class, 'register']);
+Route::post('/member/login', [MemberController::class, 'login']);
+Route::post('/member/logout', [MemberController::class, 'logout']);
 
 Route::group(['prefix' => '/member',], function () {
     

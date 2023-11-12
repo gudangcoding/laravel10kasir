@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\Produk;
+use App\Models\Satuan;
 // use PDF;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -18,8 +19,9 @@ class ProdukController extends Controller
     public function index()
     {
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
+        $satuan = Satuan::all()->pluck('nama_satuan', 'id_satuan');
 
-        return view('produk.index', compact('kategori'));
+        return view('produk.index', compact('kategori','satuan'));
     }
 
     public function data()
@@ -95,6 +97,7 @@ class ProdukController extends Controller
         $produk->diskon       = $request['diskon'];
         $produk->harga_jual    = $request['harga_jual'];
         $produk->stok          = $request['stok'];
+        $produk->id_satuan          = $request['satuan'];
         $produk->stok_minimal          = $request['stok_minimal'];
         //  //upload gambar
         if ($request->hasFile('gambar')) {
@@ -149,6 +152,7 @@ class ProdukController extends Controller
         $produk->diskon       = $request['diskon'];
         $produk->harga_jual    = $request['harga_jual'];
         $produk->stok          = $request['stok'];
+        $produk->id_satuan          = $request['satuan'];
         $produk->stok_minimal          = $request['stok_minimal'];
         //  //upload gambar
         if ($request->hasFile('gambar')) {

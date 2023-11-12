@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\KategoriController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProdukController;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/produk',[ProdukController::class,'index']);
+Route::get('/kategori',[KategoriController::class,'index']);
 Route::post('/order', [OrderController::class, 'order']);
 
 Route::post('/member/register', [MemberController::class, 'register']);

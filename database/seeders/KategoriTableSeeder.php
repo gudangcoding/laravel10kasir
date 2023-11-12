@@ -15,16 +15,6 @@ class KategoriTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('kategori')->insert(
-            array(
-                [
-
-                    'nama_kategori' => 'MAKANAN',
-                ],
-                [
-                    'nama_kategori' => 'MINUMAN',
-                ]
-            )
-        );
+        \App\Models\Kategori::factory(10)->create();
     }
 }

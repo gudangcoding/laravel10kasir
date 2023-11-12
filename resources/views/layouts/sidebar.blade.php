@@ -30,6 +30,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('satuan.index') }}">
+                    <i class="fa fa-list"></i> <span>Satuan</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('produk.index') }}">
                     <i class="fa fa-cubes"></i> <span>Produk</span>
                 </a>

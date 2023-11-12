@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Satuan;
+use App\Models\satuan;
 
-class SatuanController extends Controller
+class satuanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,29 +14,26 @@ class SatuanController extends Controller
      */
     public function index()
     {
-        return view('Satuan.index');
+        return view('satuan.index');
     }
 
     public function data()
     {
-        $Satuan = Satuan::orderBy('id_Satuan', 'desc')->get();
+        $satuan = satuan::orderBy('id_satuan', 'desc')->get();
 
         return datatables()
-            ->of($Satuan)
+            ->of($satuan)
             ->addIndexColumn()
-            ->addColumn('gambar', function ($gbr) {
-                $gambar = isset($gbr->gambar) ? asset("images/Satuan/" . $gbr->gambar) : asset("no-image.jpg");
-                return '<img width="50" src="' . $gambar . '">';
-            })
-            ->addColumn('aksi', function ($Satuan) {
+           
+            ->addColumn('aksi', function ($satuan) {
                 return '
                 <div class="btn-group">
-                    <button onclick="editForm(`'. route('Satuan.update', $Satuan->id_Satuan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button onclick="deleteData(`'. route('Satuan.destroy', $Satuan->id_Satuan) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button onclick="editForm(`'. route('satuan.update', $satuan->id_satuan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="deleteData(`'. route('satuan.destroy', $satuan->id_satuan) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
-            ->rawColumns(['aksi', 'gambar'])
+            ->rawColumns(['aksi'])
             ->make(true);
     }
 
@@ -58,16 +55,11 @@ class SatuanController extends Controller
      */
     public function store(Request $request)
     {
-        $Satuan = new Satuan();
-        $Satuan->nama_satuan = $request->nama_satuan;
-        if ($request->hasFile('gambar')) {
-            $imageName = "Satuan - " . time() . '.' . $request->gambar->extension();
-            $request->gambar->move(public_path('images/Satuan'), $imageName);
-            $Satuan->gambar   = $imageName;
-            $Satuan->save();
-        }
-        $Satuan->save();
-        return redirect('Satuan');
+        $satuan = new satuan();
+        $satuan->nama_satuan = $request->nama_satuan;
+        
+        $satuan->save();
+        return redirect('satuan');
         //return response()->json('Data berhasil disimpan', 200);
     }
 
@@ -79,9 +71,9 @@ class SatuanController extends Controller
      */
     public function show($id)
     {
-        $Satuan = Satuan::find($id);
+        $satuan = satuan::find($id);
 
-        return response()->json($Satuan);
+        return response()->json($satuan);
     }
 
     /**
@@ -104,16 +96,11 @@ class SatuanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $Satuan = Satuan::find($id);
-        $Satuan->nama_satuan = $request->nama_satuan;
-        if ($request->hasFile('gambar')) {
-            $imageName = "Satuan - " . time() . '.' . $request->gambar->extension();
-            $request->gambar->move(public_path('images/Satuan'), $imageName);
-            $Satuan->gambar   = $imageName;
-            $Satuan->save();
-        }
-        $Satuan->update();
-        return redirect('Satuan');
+        $satuan = satuan::find($id);
+        $satuan->nama_satuan = $request->nama_satuan;
+        
+        $satuan->update();
+        return redirect('satuan');
         //return response()->json('Data berhasil disimpan', 200);
     }
 
@@ -125,9 +112,9 @@ class SatuanController extends Controller
      */
     public function destroy($id)
     {
-        $Satuan = Satuan::find($id);
-        $Satuan->delete();
-        return redirect('Satuan');
+        $satuan = satuan::find($id);
+        $satuan->delete();
+        return redirect('satuan');
         //return response(null, 204);
     }
 }

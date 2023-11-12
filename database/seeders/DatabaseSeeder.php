@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SupplierTableSeeder::class,
             KategoriTableSeeder::class,
             SatuanSeeder::class,
+            ProductsTableSeeder::class,
         ]);
     }
 }

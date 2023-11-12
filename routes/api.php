@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/produk',[ProdukController::class,'index']);
+Route::resource('/produk',[ProdukController::class,'index']);
 Route::get('/kategori',[KategoriController::class,'index']);
 Route::post('/order', [OrderController::class, 'order']);
 

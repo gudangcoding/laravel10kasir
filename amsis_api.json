@@ -1,0 +1,175 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Pos App",
+    "dateExported": "2023-11-12T08:40:47.730Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "01014788-9cd5-4c7d-ad05-26efa63d054f",
+            "name": "Produk",
+            "containerId": "",
+            "created": "2023-10-31T10:37:49.387Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "efa902d1-ba34-420d-af57-e27acc051ad0",
+            "name": "auth member",
+            "containerId": "",
+            "created": "2023-11-02T08:59:02.539Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "bfc92602-1114-4570-bd96-9d580c65d982",
+            "name": "order",
+            "containerId": "",
+            "created": "2023-11-03T14:09:11.054Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "0f682da1-5a1f-4be6-8c84-e37370e0e919",
+            "colId": "fe005b50-e1a5-4e9f-99c6-88f3f95477fb",
+            "containerId": "01014788-9cd5-4c7d-ad05-26efa63d054f",
+            "name": "Get All",
+            "url": "https://kasir.app/api/produk",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-31T10:37:57.028Z",
+            "modified": "2023-10-31T10:38:36.445Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "5a22ae7d-075f-4ebb-b53e-0e209ffa8558",
+            "colId": "fe005b50-e1a5-4e9f-99c6-88f3f95477fb",
+            "containerId": "bfc92602-1114-4570-bd96-9d580c65d982",
+            "name": "order",
+            "url": "https://kasir.app/api/order",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-11-03T14:09:21.677Z",
+            "modified": "2023-11-03T14:41:44.588Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id_user\":1,\n  \"id_member\":1,\n  \"total_item\":1,\n  \"total_harga\":1000,\n  \"diskon\":1000,\n  \"bayar\":1000,\n  \"alamat\":\"Bekasi\",\n  \"items\":{\n    \"id_penjualan\":1,\n    \"id_produk\":\"1\",\n    \"harga_jual\":1000,\n    \"jumlah\":1,\n    \"diskon\":1,\n    \"subtotal\":1000\n  }\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "df02fb74-1021-4711-87f3-8a80fe7959f1",
+            "colId": "fe005b50-e1a5-4e9f-99c6-88f3f95477fb",
+            "containerId": "efa902d1-ba34-420d-af57-e27acc051ad0",
+            "name": "register",
+            "url": "https://kasir.app/api/member/register",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-11-02T08:59:20.081Z",
+            "modified": "2023-11-11T14:25:04.306Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nama\":\"Anas\",\n  \"email\":\"c@c.com\",\n  \"password\":\"123\",\n  \"c_password\":\"123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "b608c510-4494-4a4f-8493-839108fc859a",
+            "colId": "fe005b50-e1a5-4e9f-99c6-88f3f95477fb",
+            "containerId": "efa902d1-ba34-420d-af57-e27acc051ad0",
+            "name": "login",
+            "url": "https://kasir.app/api/member/login",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-11-02T09:13:27.658Z",
+            "modified": "2023-11-11T14:29:33.153Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"c@c.com\",\n  \"password\":\"123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "ddc9a4c8-8f03-4fa5-8f50-d90121df869d",
+            "colId": "fe005b50-e1a5-4e9f-99c6-88f3f95477fb",
+            "containerId": "efa902d1-ba34-420d-af57-e27acc051ad0",
+            "name": "logout",
+            "url": "https://kasir.app/api/member/login",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-11-11T09:40:14.090Z",
+            "modified": "2023-11-11T09:40:14.090Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"c2@c.com\",\n  \"password\":\"123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "ba830ee8-cb78-4965-87cd-1e0a0169004d",
+            "colId": "fe005b50-e1a5-4e9f-99c6-88f3f95477fb",
+            "containerId": "",
+            "name": "kategori",
+            "url": "https://kasir.app/api/kategori",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-11-12T08:08:47.461Z",
+            "modified": "2023-11-12T08:09:01.198Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

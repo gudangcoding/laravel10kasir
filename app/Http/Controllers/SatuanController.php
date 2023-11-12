@@ -19,7 +19,7 @@ class satuanController extends Controller
 
     public function data()
     {
-        $satuan = satuan::orderBy('id_satuan', 'desc')->get();
+        $satuan = Satuan::orderBy('id_satuan', 'desc')->get();
 
         return datatables()
             ->of($satuan)
@@ -28,7 +28,7 @@ class satuanController extends Controller
             ->addColumn('aksi', function ($satuan) {
                 return '
                 <div class="btn-group">
-                    <button onclick="editForm(`'. route('satuan.update', $satuan->id_satuan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="editForm(`'. route('satuan.edit', $satuan->id_satuan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="deleteData(`'. route('satuan.destroy', $satuan->id_satuan) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
@@ -71,7 +71,7 @@ class satuanController extends Controller
      */
     public function show($id)
     {
-        $satuan = satuan::find($id);
+        $satuan = Satuan::find($id);
 
         return response()->json($satuan);
     }
@@ -84,7 +84,8 @@ class satuanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $satuan = Satuan::find($id);
+        return response()->json($satuan);
     }
 
     /**
@@ -96,7 +97,7 @@ class satuanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $satuan = satuan::find($id);
+        $satuan = Satuan::find($id);
         $satuan->nama_satuan = $request->nama_satuan;
         
         $satuan->update();
@@ -112,7 +113,7 @@ class satuanController extends Controller
      */
     public function destroy($id)
     {
-        $satuan = satuan::find($id);
+        $satuan = Satuan::find($id);
         $satuan->delete();
         return redirect('satuan');
         //return response(null, 204);

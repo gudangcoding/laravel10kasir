@@ -12,16 +12,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="nama_satuan" class="col-lg-2 col-lg-offset-1 control-label">satuan</label>
+                        <label for="nama_satuan" class="col-lg-2 col-lg-offset-1 control-label">Nama Satuan</label>
                         <div class="col-lg-6">
                             <input type="text" name="nama_satuan" id="nama_satuan" class="form-control" required autofocus>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="nama_satuan" class="col-lg-2 col-lg-offset-1 control-label">satuan</label>
-                        <div class="col-lg-6">
-                            <input type="file" name="gambar" id="gambar" class="form-control" required autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

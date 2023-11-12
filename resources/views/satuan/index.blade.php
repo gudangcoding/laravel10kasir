@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-    Daftar satuan
+    Daftar Satuan
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar satuan</li>
+    <li class="active">Daftar Satuan</li>
 @endsection
 
 @section('content')
@@ -21,7 +21,6 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>satuan</th>
-                        <th>Gambar</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
                 </table>
@@ -47,7 +46,6 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'nama_satuan'},
-                {data: 'gambar'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
         });

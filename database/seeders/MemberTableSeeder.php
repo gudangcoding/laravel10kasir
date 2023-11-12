@@ -15,13 +15,16 @@ class MemberTableSeeder extends Seeder
     {
         DB::table('member')->insert(array(
             [
-
+                'email'=> 'm@m.com',
+                'password'=> bcrypt('123'),
                 'kode_member' => 'M001',
                 'nama' => 'Tes1',
                 'alamat' => 'Jakarta',
                 'telepon' =>'111',
             ],
             [
+                'email'=> 'm2@m.com',
+                'password'=> bcrypt('123'),
                 'kode_member' => 'M002',
                 'nama' => 'Te2',
                 'alamat' => 'Bekasi',

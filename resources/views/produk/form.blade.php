@@ -35,9 +35,12 @@
                         <div class="col-lg-6">
                             <select name="satuan" id="satuan" class="form-control" required>
                                 <option value="">Pilih Satuan</option>
-                                @foreach ($kategori as $key => $item)
-                                <option value="{{ $key }}">{{ $item }}</option>
-                                @endforeach
+                                <option value="Dus">Dus</option>
+                                <option value="Pcs">Pcs</option>
+                                <option value="Pak">Pak</option>
+                                <option value="Rcg">Renceng</option>
+                                <option value="Ktg">Kantong</option>
+                                <option value="Kg">Kilogram</option>
                             </select>
                             <span class="help-block with-errors"></span>
                         </div>

@@ -38,6 +38,7 @@
                             <th>Harga Jual</th>
                             <th>Diskon</th>
                             <th>Stok</th>
+                            <th>Satuan</th>
                             <th>Min</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
@@ -75,6 +76,7 @@
                 {data: 'harga_jual'},
                 {data: 'diskon'},
                 {data: 'stok'},
+                {data: 'satuan'},
                 {data: 'stok_minimal'},
                 {data: 'aksi', searchable: false, sortable: false},
             ],

@@ -140,6 +140,7 @@
                 $('#modal-form [name=harga_jual]').val(response.harga_jual);
                 $('#modal-form [name=diskon]').val(response.diskon);
                 $('#modal-form [name=stok]').val(response.stok);
+                $('#modal-form [name=satuan]').val(response.satuan);
                 $('#modal-form [name=stok_minimal]').val(response.stok_minimal);
             })
             .fail((errors) => {

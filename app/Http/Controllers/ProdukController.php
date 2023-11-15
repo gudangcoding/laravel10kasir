@@ -19,9 +19,8 @@ class ProdukController extends Controller
     public function index()
     {
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
-        $satuan = Satuan::all()->pluck('nama_satuan', 'id_satuan');
 
-        return view('produk.index', compact('kategori','satuan'));
+        return view('produk.index', compact('kategori'));
     }
 
     public function data()

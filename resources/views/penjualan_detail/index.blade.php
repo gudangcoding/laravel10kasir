@@ -206,7 +206,8 @@
                     });
                 })
                 .fail(errors => {
-                    alert('Tidak dapat menyimpan data');
+                   // alert('Tidak dapat menyimpan data');
+                   table.ajax.reload(() => loadForm($('#diskon').val()));
                     return;
                 });
         });

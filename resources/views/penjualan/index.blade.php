@@ -24,7 +24,7 @@
                             <th>Diskon</th>
                             <th>Total Bayar</th>
                             <th>Status</th>
-                            <th>Kasir</th>
+                            <th>Pembayaran</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
                     </table>

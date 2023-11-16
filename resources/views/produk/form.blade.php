@@ -31,13 +31,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="id_kategori" class="col-lg-2 col-lg-offset-1 control-label">Satuan</label>
+                        <label for="satuan" class="col-lg-2 col-lg-offset-1 control-label">Satuan</label>
                         <div class="col-lg-6">
                             <select name="satuan" id="satuan" class="form-control" required>
                                 <option value="">Pilih Satuan</option>
-                                @foreach ($kategori as $key => $item)
-                                <option value="{{ $key }}">{{ $item }}</option>
-                                @endforeach
+                                <option value="Dus">Dus</option>
+                                <option value="Pcs">Pcs</option>
+                                <option value="Pak">Pak</option>
+                                <option value="Rcg">Renceng</option>
+                                <option value="Ktg">Kantong</option>
+                                <option value="Kg">Kilogram</option>
                             </select>
                             <span class="help-block with-errors"></span>
                         </div>

@@ -19,9 +19,8 @@ class ProdukController extends Controller
     public function index()
     {
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
-        $satuan = Satuan::all()->pluck('nama_satuan', 'id_satuan');
 
-        return view('produk.index', compact('kategori','satuan'));
+        return view('produk.index', compact('kategori'));
     }
 
     public function data()
@@ -97,7 +96,7 @@ class ProdukController extends Controller
         $produk->diskon       = $request['diskon'];
         $produk->harga_jual    = $request['harga_jual'];
         $produk->stok          = $request['stok'];
-        $produk->id_satuan          = $request['satuan'];
+        $produk->satuan          = $request['satuan'];
         $produk->stok_minimal          = $request['stok_minimal'];
         //  //upload gambar
         if ($request->hasFile('gambar')) {
@@ -152,7 +151,7 @@ class ProdukController extends Controller
         $produk->diskon       = $request['diskon'];
         $produk->harga_jual    = $request['harga_jual'];
         $produk->stok          = $request['stok'];
-        $produk->id_satuan          = $request['satuan'];
+        $produk->satuan          = $request['satuan'];
         $produk->stok_minimal          = $request['stok_minimal'];
         //  //upload gambar
         if ($request->hasFile('gambar')) {

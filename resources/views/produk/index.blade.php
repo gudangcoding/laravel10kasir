@@ -38,6 +38,7 @@
                             <th>Harga Jual</th>
                             <th>Diskon</th>
                             <th>Stok</th>
+                            <th>Satuan</th>
                             <th>Min</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
@@ -75,6 +76,7 @@
                 {data: 'harga_jual'},
                 {data: 'diskon'},
                 {data: 'stok'},
+                {data: 'satuan'},
                 {data: 'stok_minimal'},
                 {data: 'aksi', searchable: false, sortable: false},
             ],
@@ -138,6 +140,7 @@
                 $('#modal-form [name=harga_jual]').val(response.harga_jual);
                 $('#modal-form [name=diskon]').val(response.diskon);
                 $('#modal-form [name=stok]').val(response.stok);
+                $('#modal-form [name=satuan]').val(response.satuan);
                 $('#modal-form [name=stok_minimal]').val(response.stok_minimal);
             })
             .fail((errors) => {

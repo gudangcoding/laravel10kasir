@@ -74,7 +74,7 @@
                         data: 'status'
                     },
                     {
-                        data: 'kasir'
+                        data: 'metode_bayar'
                     },
                     {
                         data: 'aksi',
@@ -85,19 +85,19 @@
                 'rowCallback': function(row, data, index) {
 
                     if (data.status == 'Selesai') {
-                        $(row).find('td:eq(8)').css('background', 'green');
+                        $(row).find('td:eq(7)').css('background', 'green');
 
                     }
                     if(data.status == 'Pending') {
-                        $(row).find('td:eq(8)').css('background', 'Red');
+                        $(row).find('td:eq(7)').css('background', 'Red');
 
                     }
                     if(data.status == 'Dibayar') {
-                        $(row).find('td:eq(8)').css('background', 'orange');
+                        $(row).find('td:eq(7)').css('background', 'orange');
 
                     }
                     if(data.status == 'Dikirim') {
-                        $(row).find('td:eq(8)').css('background', 'gray');
+                        $(row).find('td:eq(7)').css('background', 'gray');
 
                     } 
 

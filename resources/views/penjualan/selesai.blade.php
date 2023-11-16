@@ -16,7 +16,7 @@
             <div class="box-body">
                 <div class="alert alert-success alert-dismissible">
                     <i class="fa fa-check icon"></i>
-                    Data Transaksi telah selesai.
+                    Data Transaksi telah disimpan.
                 </div>
             </div>
             <div class="box-footer">

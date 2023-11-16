@@ -8,8 +8,8 @@ use App\Models\Produk;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\Member;
-// use PDF;
-use Barryvdh\DomPDF\Facade\Pdf;
+use PDF;
+// use Barryvdh\DomPDF\Facade\Pdf;
 
 class PenjualanController extends Controller
 {

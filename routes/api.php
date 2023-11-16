@@ -24,11 +24,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('/produk',ProdukController::class);
 Route::get('/kategori',[KategoriController::class,'index']);
-Route::post('/order', [OrderController::class, 'order']);
+
 
 Route::post('/member/register', [MemberController::class, 'register']);
 Route::post('/member/login', [MemberController::class, 'login']);
-Route::post('/member/logout', [MemberController::class, 'logout']);
+
+
+Route::post('/order', [OrderController::class, 'order']);
+
+Route::group(['prefix' => '/member', 'middleware' => ['web']], function () {
+    Route::post('/logout', [MemberController::class, 'logout']);
+});
 
 Route::group(['prefix' => '/member',], function () {
     
